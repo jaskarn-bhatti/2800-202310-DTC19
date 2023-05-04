@@ -1,3 +1,1 @@
 This is dev. (practice txt file for 02C GitFlow assingnment)
-
-Robert Oh - feature 1 (sample text for feature branch)
