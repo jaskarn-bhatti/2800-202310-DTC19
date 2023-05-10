@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const port = process.env.PORT || 3000;
 
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
     res.redirect('/login');
 });
 
+// Login Route
 app.get('/login', (req, res) => {
     res.send(`
         <h1>Login</h1>
@@ -40,9 +42,25 @@ app.get('/login', (req, res) => {
             <input type="password" name="password" id="password" required><br>
             <input type="submit" value="Login">
         </form>
-        <a href="/register">Register</a>
-        <a href="/forgot">Forgot Password</a>`);
+        <a href="/signup">Sign up</a>`);
 });
+
+// Signup Route
+app.get('/signup', (req, res) => {
+    res.send(`
+        <h1>Sign Up</h1>
+        <form action="/signup" method="POST">
+            <label for ="email">Email</label>
+            <input type="text" name="email" id="email" required><br>
+            <label for ="username">Username</label>
+            <input type="text" name="username" id="username" required><br>
+            <label for ="password">Password</label>
+            <input type="password" name="password" id="password" required><br>
+            <input type="submit" value="Signup">
+        </form>
+        <a href="/login">Login</a>`);
+});
+
 
 
 // Launch app to listen to specified port
