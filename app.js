@@ -21,18 +21,11 @@ const app = express();
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`, { useNewUrlParser: true });
 const usersDb = mongoose.connection;
 
-mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`, { useNewUrlParser: true });
-const sessionsDb = mongoose.connection;
-
-var dbStore = new MongoDBStore({
-    mongooseConnection: sessionsDb
-});
-
 // Connect to the database
-// var dbStore = new MongoDBStore({
-//     uri: 'mongodb + srv: //${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.lletqsu.mongodb.net/comp2537?retryWrites=true&w=majority',
-//     collection: 'sessions'
-// });
+var dbStore = new MongoDBStore({
+    uri: `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`,
+    collection: 'sessions'
+});
 
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -49,18 +42,6 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24, // 1 day
     }
 }));
-
-//Database connection
-// const { error } = require('console');
-// // const { MongoDBStore } = require('connect-mongodb-session');
-// mongoose.connect('mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority')
-//     .then(() => {
-//         console.log('connected to MongoDB')
-//     }).catch(() => {
-//         console.log(error)
-//     });
-
-//Not done yet
 
 // Root Route
 app.get('/', (req, res) => {
