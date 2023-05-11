@@ -18,7 +18,7 @@
     "express-session": "^1.17.3",
     "init": "^0.1.2",
     "joi": "^17.9.2",
-    "mongoose": "^7.1.0",
+    "mongoose": "^7.1.1",
     "node": "^20.1.0",
     "nodemon": "^2.0.22"
   }
