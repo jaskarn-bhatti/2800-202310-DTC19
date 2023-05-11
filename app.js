@@ -10,6 +10,9 @@ const port = process.env.PORT || 3000;
 //Create express app
 const app = express();
 
+// Set the view engine to ejs
+app.set('view engine', 'ejs');
+
 //Setup session
 app.use(session({
     secret: 'secret',
@@ -26,39 +29,19 @@ app.use(session({
 // Root Route
 app.get('/', (req, res) => {
     //If user, redirect to home
-
+    
     //Else, redirect to login
     res.redirect('/login');
 });
 
 // Login Route
 app.get('/login', (req, res) => {
-    res.send(`
-        <h1>Login</h1>
-        <form action="/login" method="POST">
-            <label for ="username">Username</label>
-            <input type="text" name="username" id="username" required><br>
-            <label for ="password">Password</label>
-            <input type="password" name="password" id="password" required><br>
-            <input type="submit" value="Login">
-        </form>
-        <a href="/signup">Sign up</a>`);
+    res.render('pages/login');
 });
 
 // Signup Route
 app.get('/signup', (req, res) => {
-    res.send(`
-        <h1>Sign Up</h1>
-        <form action="/signup" method="POST">
-            <label for ="email">Email</label>
-            <input type="text" name="email" id="email" required><br>
-            <label for ="username">Username</label>
-            <input type="text" name="username" id="username" required><br>
-            <label for ="password">Password</label>
-            <input type="password" name="password" id="password" required><br>
-            <input type="submit" value="Signup">
-        </form>
-        <a href="/login">Login</a>`);
+    res.render('pages/signup');
 });
 
 
