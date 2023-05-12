@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <h2>Settings</h2>
+    <form method="POST" action="/update-username">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="username">
+        <button type="submit">Change</button>
+    </form>
+    <form method="POST" action="/update-email">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="email">
+        <button type="submit">Change</button>
+    </form>
+    <form method="POST" action="/update-password">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <button type="submit">Change</button>
+    </form>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+
+</body>
+</html>

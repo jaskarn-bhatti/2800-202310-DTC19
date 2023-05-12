@@ -45,10 +45,12 @@ app.use(session({
 
 // Root Route
 app.get('/', (req, res) => {
-    //If user, redirect to home
-
-    //Else, redirect to login
-    res.redirect('/login');
+    //If user, redirect to home, else redirect to login
+    if (req.session.user) {
+        res.redirect('/home');
+    } else {
+        res.redirect('/login');
+    }
 });
 
 // Middleware
@@ -58,6 +60,45 @@ app.use(express.json())
 // Login Route
 app.get('/login', (req, res) => {
     res.render('pages/login');
+});
+
+// Login Schema
+const loginSchema = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+});
+
+app.post('/login', async(req, res) => {
+    try {
+        var username = req.body.username;
+        var password = req.body.password;
+
+        const { error } = loginSchema.validate({ username, password });
+        if (error) {
+            throw new Error(error.details[0].message);
+        }
+
+        User.db = usersDb;
+
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            throw new Error('Invalid username or password');
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            throw new Error('Invalid username or password');
+        }
+
+        req.session.user = { id: user._id, email: user.email, username: user.username, password: user.password };
+        res.redirect('/home');
+
+    } catch (error) {
+        console.log(error);
+        res.send('Error signing up: ${error.message}. <a href = "/signup">Try again</a>')
+    }
 });
 
 // Signup Route
@@ -106,6 +147,28 @@ app.post('/signup', async(req, res) => {
 // Home Route
 app.get('/home', (req, res) => {
     res.render('pages/home');
+});
+
+// Profile Route
+app.get('/profile', (req, res) => {
+    res.render('pages/profile');
+});
+
+// Settings Route
+app.get('/settings', (req, res) => {
+    res.render('pages/settings');
+});
+
+//Logout Route
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
+});
+
+// 404 Route
+app.get('*', (req, res) => {
+    res.status(404).send('404 - Page not found');
 });
 
 // Launch app to listen to specified port
