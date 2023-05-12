@@ -6,23 +6,36 @@
 <body class="container">
 
 <header>
-  <%- include('../partials/header'); %>
+  <div class="header">
+    <h1>FitTrack</h1>
+  </div>  
 </header>
 
 <main>
-    <h1>Login</h1>
+  <div class="login">
+    <h2 class="text-center">Login</h1>
     <form action="/login" method="POST">
-        <label for ="username">Username</label>
-        <input type="text" name="username" id="username" required><br>
-        <label for ="password">Password</label>
-        <input type="password" name="password" id="password" required><br>
-        <input type="submit" value="Login">
+        <div class="form-outline mb-4">
+          <label class="form-label" for ="username">Username</label>
+          <input class="form-control" type="text" name="username" id="username" required><br>  
+        </div>
+
+        <div class="form-outline mb-4">
+          <label class="form-label" for ="password">Password</label>
+          <input class="form-control" type="password" name="password" id="password" required><br>
+        </div>
+
+        <input class="form-control" type="submit" value="Login">
     </form>
-    <a href="/signup">Sign up</a>
+    <div class="text-center">
+      <a href="/signup">Sign up</a>
+    </div>
+
+  </div>
 </main>
 
 <footer>
-  <%- include('../partials/footer'); %>
+
 </footer>
 
 </body>
