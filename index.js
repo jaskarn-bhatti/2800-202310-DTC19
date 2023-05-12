@@ -72,6 +72,7 @@ const loginSchema = Joi.object({
     password: Joi.string().required(),
 });
 
+// Login Backend
 app.post('/login', async(req, res) => {
     try {
         var username = req.body.username;
@@ -153,17 +154,44 @@ app.post('/signup', async(req, res) => {
 
 // Home Route
 app.get('/home', (req, res) => {
-    res.render('pages/home');
+    const username = req.session.user.username;
+    res.render('pages/home', {username});
 });
 
 // Profile Route
 app.get('/profile', (req, res) => {
-    res.render('pages/profile');
+    const username = req.session.user.username;
+    res.render('pages/profile', {username});
 });
 
 // Settings Route
 app.get('/settings', (req, res) => {
-    res.render('pages/settings');
+    const username = req.session.user.username;
+    const email = req.session.user.email;
+    res.render('pages/settings', {username, email});
+});
+
+// Password Update Route
+app.post('/update-password', async (req, res) => {
+    try {
+      const user = req.session.user;
+      const newPassword = req.body.password;
+  
+      // Hash the new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+  
+      // Update the user's password in the database
+      await User.updateOne({ _id: user.id }, { password: hashedPassword });
+  
+      // Update the password in the session
+      req.session.user.password = hashedPassword;
+  
+      res.redirect('/settings');
+    } catch (error) {
+      console.error(error);
+      res.send(`Error updating password: ${error.message}. <a href="/settings">Try again</a>`);
+    }
 });
 
 //Logout Route
