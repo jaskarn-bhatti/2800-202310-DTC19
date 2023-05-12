@@ -1,0 +1,27 @@
+.MainPageButtons {
+    display: flex;
+    justify-content: space-between;
+    /* This evenly distributes the child elements */
+    padding: 20px;
+}
+
+.MainPageButtons a {
+    flex: 1;
+    /* This makes each child element take up an equal amount of space */
+    background-color: rgb(224, 235, 128);
+    text-decoration: none;
+    padding: 10px 0;
+    /* Reduce the horizontal padding to fit in the container */
+    border-radius: 3px;
+    text-align: center;
+}
+
+.MainPageButtons a:hover {
+    background-color: black;
+    transition: ease .35s;
+    color: rgb(224, 235, 128);
+}
+
+body {
+    background-color: #eee;
+}
