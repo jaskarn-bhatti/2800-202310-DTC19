@@ -43,10 +43,12 @@ app.use(session({
 
 // Root Route
 app.get('/', (req, res) => {
-    //If user, redirect to home
-
-    //Else, redirect to login
-    res.redirect('/login');
+    //If user, redirect to home, else redirect to login
+    if (req.session.user) {
+        res.redirect('/home');
+    } else {
+        res.redirect('/login');
+    }
 });
 
 // Middleware
@@ -149,6 +151,28 @@ app.post('/signup', async(req, res) => {
 // Home Route
 app.get('/home', (req, res) => {
     res.render('pages/home');
+});
+
+// Profile Route
+app.get('/profile', (req, res) => {
+    res.render('pages/profile');
+});
+
+// Settings Route
+app.get('/settings', (req, res) => {
+    res.render('pages/settings');
+});
+
+//Logout Route
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
+});
+
+// 404 Route
+app.get('*', (req, res) => {
+    res.status(404).send('404 - Page not found');
 });
 
 // Launch app to listen to specified port
