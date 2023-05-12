@@ -32,9 +32,7 @@ app.set('view engine', 'ejs');
 
 //Setup session
 app.use(session({
-    secret: `
-        $ { process.env.NODE_SESSION_SECRET }
-        `,
+    secret: `${process.env.NODE_SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
     store: dbStore,
@@ -55,10 +53,54 @@ app.get('/', (req, res) => {
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
+
+/* LOGIN CODE */
+
 // Login Route
 app.get('/login', (req, res) => {
     res.render('pages/login');
 });
+
+// Login Schema
+const loginSchema = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+});
+
+app.post('/login', async(req, res) => {
+    try {
+        var username = req.body.username;
+        var password = req.body.password;
+
+        const { error } = loginSchema.validate({ username, password });
+        if (error) {
+            throw new Error(error.details[0].message);
+        }
+
+        User.db = usersDb;
+
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            throw new Error('Invalid username or password');
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            throw new Error('Invalid username or password');
+        }
+
+        req.session.user = { id: user._id, email: user.email, username: user.username, password: user.password };
+        res.redirect('/home');
+
+    } catch (error) {
+        console.log(error);
+        res.send('Error signing up: ${error.message}. <a href = "/signup">Try again</a>')
+    }
+});
+
+/* SIGNUP CODE */
 
 // Signup Route
 app.get('/signup', (req, res) => {
@@ -72,6 +114,7 @@ const signUpSchema = Joi.object({
     password: Joi.string().required(),
 });
 
+// Signup backend
 app.post('/signup', async(req, res) => {
     //Store user 
     try {
