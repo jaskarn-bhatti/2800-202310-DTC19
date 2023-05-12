@@ -16,6 +16,9 @@ const port = process.env.PORT || 3000;
 //Create express app
 const app = express();
 
+// Static Files
+app.use(express.static('public'))
+app.use('/css', express.static(__dirname + 'public/css'))
 
 // Set up database connections
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`, { useNewUrlParser: true });
@@ -166,7 +169,7 @@ app.get('/settings', (req, res) => {
 //Logout Route
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
-      res.redirect('/');
+        res.redirect('/');
     });
 });
 
