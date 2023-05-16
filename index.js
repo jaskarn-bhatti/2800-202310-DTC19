@@ -17,8 +17,9 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 // Static Files
-app.use(express.static('public'))
-app.use('/css', express.static(__dirname + 'public/css'))
+app.use('/public', express.static(__dirname + "/public"));
+app.use('/css', express.static(__dirname + 'public/css'));
+app.use('/icons', express.static(__dirname + 'public/icons'));
 
 // Set up database connections
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`, { useNewUrlParser: true });
