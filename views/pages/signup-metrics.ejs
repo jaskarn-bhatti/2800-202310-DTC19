@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <div class="header">
+    <h1>FitTrack</h1>
+  </div>  
+</header>
+
+<main>
+    <h2>Enter your information</h1>
+  <form action="/signup-metrics" method="POST">
+    <label for="age">Age:</label>
+    <input type="number" name="age" id="age" required>
+    <br>
+
+    <label for="currentWeight">Current Weight (kg):</label>
+    <input type="number" name="currentWeight" id="currentWeight" required>
+    <br>
+
+    <label for="currentHeight">Current Height (cm):</label>
+    <select name="currentHeight" id="currentHeight" required>
+      <option value="150">150 cm</option>
+      <option value="160">160 cm</option>
+      <option value="170">170 cm</option>
+      <!-- Add more options as needed -->
+    </select>
+    <br>
+
+    <label for="activityLevel">Activity Level:</label>
+    <select name="activityLevel" id="activityLevel" required>
+      <option value="sedentary">Sedentary</option>
+      <option value="lightlyActive">Lightly Active</option>
+      <option value="moderatelyActive">Moderately Active</option>
+      <option value="veryActive">Very Active</option>
+      <!-- Add more options as needed -->
+    </select>
+    <br>
+
+    <label for="dailyCalories">Daily Calorie Goals:</label>
+    <input type="number" name="dailyCalories" id="dailyCalories" required>
+    <br>
+
+    <label for="goalWeight">Goal Weight (kg):</label>
+    <input type="number" name="goalWeight" id="goalWeight" required>
+    <br>
+
+    <input type="submit" value="Complete">
+</main>
+
+<footer>
+
+</footer>
+
+</body>
+</html>

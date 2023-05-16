@@ -145,11 +145,69 @@ app.post('/signup', async(req, res) => {
 
         await user.save();
         req.session.user = { id: user._id, email: user.email, username: user.username, password: user.password };
-        res.redirect('/home');
+        res.redirect('/signup-metrics');
 
     } catch (error) {
         console.log(error);
         res.send('Error signing up: $ { error.message }. < a href = "/signup" > Try again < /a>');
+    }
+});
+
+// Signup - User Metrics Route
+app.get('/signup-metrics', (req, res) => {
+    res.render('pages/signup-metrics');
+});
+
+// Signup - User Metrics Schema
+const signUpMetricsSchema = Joi.object({
+    age: Joi.number().integer().positive().required(),
+    currentWeight: Joi.number().positive().required(),
+    currentHeight: Joi.number().positive().required(),
+    activityLevel: Joi.string().valid('sedentary', 'lightly active', 'moderately active', 'very active').required(),
+    dailyCalories: Joi.number().positive().required(),
+    goalWeight: Joi.number().positive().required()
+});
+    
+
+// Signup - User Metrics Backend
+app.post('/signup-metrics', async(req, res) => {
+    try {
+        const userID = req.session.user.id;
+        var age = req.body.age;
+        var currentWeight = req.body.currentWeight;
+        var currentHeight = req.body.currentHeight;
+        var activityLevel = req.body.activityLevel;
+        var dailyCalories = req.body.dailyCalories;
+        var goalWeight = req.body.goalWeight;
+         
+        const { error } = signUpMetricsSchema.validate({ age, currentWeight, currentHeight, activityLevel, dailyCalories, goalWeight });
+        if (error) {
+            throw new Error(error.details[0].message);
+        }
+
+        User.db = usersDb;
+
+        await User.findOneAndUpdate({ _id: userID }, {
+            age: age,
+            currentWeight: currentWeight,
+            currentHeight: currentHeight,
+            activityLevel: activityLevel,
+            dailyCalories: dailyCalories,
+            goalWeight: goalWeight
+        });
+
+        var id = req.session.user.id;
+        var email = req.session.user.email;
+        var username = req.session.user.username;
+        var password = req.session.user.password;
+
+        req.session.user = { id: id, email: email, username: username, password: password, age: age, currentWeight: currentWeight, currentHeight: currentHeight, activityLevel: activityLevel, dailyCalories: dailyCalories, goalWeight: goalWeight };
+
+        res.redirect('/home');
+        
+    } catch (error) {
+        console.log(error);
+        res.send('Errors');
     }
 });
 
