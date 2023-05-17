@@ -19,6 +19,7 @@ function startTimer() {
     if (width >= 100 || time <= 0) { // Stop the timer when width reaches 100 or time is less than or equal to 0
       clearInterval(interval);
       time = 0; // Set time to 0 to ensure it displays 00:00
+      toggleCompleteButtonVisibility(); // Show the complete button
     } else {
       time -= 1; // Decrease the countdown time
       countdownTime.textContent = formatTime(time); // Update the countdown time
@@ -35,24 +36,40 @@ function stopTimer() {
   let countdownTime = document.getElementById('countdownTime');
   timerProgress.style.width = '0';
   countdownTime.textContent = formatTime(duration); // Reset the countdown time to the original duration
+  toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
 }
 
 function restartTimer() {
   stopTimer();
   startTimer();
+  toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
 }
 
 document.getElementById('startButton').addEventListener('click', function() {
   if (!interval) {
     duration = document.getElementById('timeInput').value;
     startTimer();
+    toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
   }
 });
 
 document.getElementById('stopButton').addEventListener('click', function() {
   stopTimer();
+  toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
 });
 
 document.getElementById('restartButton').addEventListener('click', function() {
   restartTimer();
+  toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
 });
+
+// Get references to the necessary DOM elements
+const completeButton = document.getElementById('completeButton');
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
+const restartButton = document.getElementById('restartButton');
+
+// Function to toggle the visibility of the completeButton
+function toggleCompleteButtonVisibility() {
+  completeButton.style.display = (interval === null || time <= 0) ? 'block' : 'none';
+}

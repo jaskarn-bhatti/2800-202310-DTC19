@@ -223,6 +223,12 @@ app.get('/run', (req, res) => {
     res.render('pages/run');
 });
 
+// Complete Exercise Route
+app.get('/complete-exercise', (req, res) => {
+    const totalTime = req.session.totalTime;
+    res.render('pages/complete-exercise', { totalTime });
+});
+
 // Profile Route
 app.get('/profile', (req, res) => {
     const username = req.session.user.username;

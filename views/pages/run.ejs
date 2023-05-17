@@ -3,7 +3,6 @@
 <head>
   <%- include('../partials/head'); %>
   <link rel="stylesheet" href="/public/css/run-timer.css">
-  
 </head>
 <body class="container">
 
@@ -27,13 +26,15 @@
       <button type="button" class="btn btn-primary" id="startButton">Start Timer</button>
       <button type="button" class="btn btn-secondary" id="stopButton">Stop Timer</button>
       <button type="button" class="btn btn-dark" id="restartButton">Restart</button>
+      <button type="button" class="btn btn-success" id="completeButton" style="display: none;">Complete Run</button>
     </div>
 </main>
 
 <footer>
   <%- include('../partials/footer'); %>
 
-  <script src="/public/scripts/run-script.js"></script> 
+  <script src="/public/scripts/run-script.js"></script>
+  </script>
 </footer>
 
 </body>
