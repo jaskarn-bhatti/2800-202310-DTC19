@@ -1,39 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <%- include('../partials/head'); %>
+    <%- include('../partials/head'); %>
 </head>
+<style>
+    h1 {
+        text-align: center;
+    }
+</style>
+
 <body class="container">
 
-<header>
-  <%- include('../partials/header'); %>
-</header>
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
 
-<main>
-  <div class="h-100 d-flex align-items-center justify-content-center">
-    <div class = "profile">
-      <h3 class="text-center"><%= username %></h3>
-      <div class="info-section">
-        <section class="text-center">
-          <h4>Goal Weight:</h4>
-          <p>180 Lbs</p>
-        </section>
-        <section class="text-center">
-          <h4>Bio:</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima nihil nemo sed earum ipsam cum repudiandae illo consequatur</p>
-        </section>
-      </div>
-      <div class="btn-toolbar d-flex align-items-center justify-content-center">
-        <a href="/settings" class="btn btn-primary">Change Settings</a>
-        <a href="/logout" class="btn btn-primary">Log Out</a>
-      </div>   
-    </div>   
-  </div>
-</main>
+    <main>
+        <!-- Body #1-->
+        <!-- BootStrap https://mdbootstrap.com/docs/standard/extended/profiles/ -->
+        <h1>Profile</h1>
 
-<footer>
-  <%- include('../partials/footer'); %>
-</footer>
+        <section style="background-color: #eee;">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <!-- Username -->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Username</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">
+                                    <%= username %>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">
+                                    <%= email %>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Age -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Age</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">
+                                    <%= age %>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Height -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Height</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">
+                                    <%= currentHeight %>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Current weight -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Weight</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">
+                                    <%= currentWeight %>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Goal Weight -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Goal Weight</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">
+                                    <%= goalWeight %>
+                                </p>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+        </section>
+
+        <!-- Body #2 -->
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="profile">
+                <div class="btn-toolbar d-flex align-items-center justify-content-center">
+                    <a href="/settings" class="btn btn-primary">Change Settings</a>
+                    <a href="/logout" class="btn btn-primary">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
 
 </body>
+
 </html>

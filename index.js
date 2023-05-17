@@ -167,7 +167,7 @@ const signUpMetricsSchema = Joi.object({
     dailyCalories: Joi.number().positive().required(),
     goalWeight: Joi.number().positive().required()
 });
-    
+
 
 // Signup - User Metrics Backend
 app.post('/signup-metrics', async(req, res) => {
@@ -179,7 +179,7 @@ app.post('/signup-metrics', async(req, res) => {
         var activityLevel = req.body.activityLevel;
         var dailyCalories = req.body.dailyCalories;
         var goalWeight = req.body.goalWeight;
-         
+
         const { error } = signUpMetricsSchema.validate({ age, currentWeight, currentHeight, activityLevel, dailyCalories, goalWeight });
         if (error) {
             throw new Error(error.details[0].message);
@@ -204,7 +204,7 @@ app.post('/signup-metrics', async(req, res) => {
         req.session.user = { id: id, email: email, username: username, password: password, age: age, currentWeight: currentWeight, currentHeight: currentHeight, activityLevel: activityLevel, dailyCalories: dailyCalories, goalWeight: goalWeight };
 
         res.redirect('/home');
-        
+
     } catch (error) {
         console.log(error);
         res.send('Errors');
@@ -214,42 +214,51 @@ app.post('/signup-metrics', async(req, res) => {
 // Home Route
 app.get('/home', (req, res) => {
     const username = req.session.user.username;
-    res.render('pages/home', {username});
+    res.render('pages/home', { username });
 });
 
 // Profile Route
 app.get('/profile', (req, res) => {
     const username = req.session.user.username;
-    res.render('pages/profile', {username});
+    const email = req.session.user.email;
+    const age = req.session.user.age;
+    const currentHeight = req.session.user.currentHeight;
+    const currentWeight = req.session.user.currentWeight;
+    const goalWeight = req.session.user.goalWeight;
+
+    console.log(req.session.user);
+
+    res.render('pages/profile', { username, email, age, currentHeight, currentWeight, goalWeight });
 });
+
 
 // Settings Route
 app.get('/settings', (req, res) => {
     const username = req.session.user.username;
     const email = req.session.user.email;
-    res.render('pages/settings', {username, email});
+    res.render('pages/settings', { username, email });
 });
 
 // Password Update Route
-app.post('/update-password', async (req, res) => {
+app.post('/update-password', async(req, res) => {
     try {
-      const user = req.session.user;
-      const newPassword = req.body.password;
-  
-      // Hash the new password
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(newPassword, salt);
-  
-      // Update the user's password in the database
-      await User.updateOne({ _id: user.id }, { password: hashedPassword });
-  
-      // Update the password in the session
-      req.session.user.password = hashedPassword;
-  
-      res.redirect('/settings');
+        const user = req.session.user;
+        const newPassword = req.body.password;
+
+        // Hash the new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        // Update the user's password in the database
+        await User.updateOne({ _id: user.id }, { password: hashedPassword });
+
+        // Update the password in the session
+        req.session.user.password = hashedPassword;
+
+        res.redirect('/settings');
     } catch (error) {
-      console.error(error);
-      res.send(`Error updating password: ${error.message}. <a href="/settings">Try again</a>`);
+        console.error(error);
+        res.send(`Error updating password: ${error.message}. <a href="/settings">Try again</a>`);
     }
 });
 
