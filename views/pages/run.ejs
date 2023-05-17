@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+  <link rel="stylesheet" href="/public/css/run-timer.css">
+  
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main class="d-flex flex-column align-items-center justify-content-center">
+    <h2>Run</h2>
+    <div class="progress circular-progress mb-5">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" id="timerProgress" role="progressbar" style="width: 0;"></div>
+      <div class="progress-countdown" id="countdownContainer">
+        <span class="countdown-time" id="countdownTime">00:00</span>
+      </div>
+    </div>
+    <div class="d-flex flex-column align-items-center">
+      <div class="mb-3">
+        <label for="timeInput" class="form-label">Enter Time (in seconds)</label>
+        <input type="number" class="form-control" id="timeInput" required>
+      </div>
+      <button type="button" class="btn btn-primary" id="startButton">Start Timer</button>
+      <button type="button" class="btn btn-secondary" id="stopButton">Stop Timer</button>
+      <button type="button" class="btn btn-dark" id="restartButton">Restart</button>
+    </div>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+
+  <script src="/public/scripts/run-script.js"></script> 
+</footer>
+
+</body>
+</html>

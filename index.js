@@ -20,6 +20,7 @@ const app = express();
 app.use('/public', express.static(__dirname + "/public"));
 app.use('/css', express.static(__dirname + 'public/css'));
 app.use('/icons', express.static(__dirname + 'public/icons'));
+app.use('/scripts', express.static(__dirname + 'public/scripts'));
 
 // Set up database connections
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`, { useNewUrlParser: true });
@@ -215,6 +216,11 @@ app.post('/signup-metrics', async(req, res) => {
 app.get('/home', (req, res) => {
     const username = req.session.user.username;
     res.render('pages/home', {username});
+});
+
+// Run Page Route
+app.get('/run', (req, res) => {
+    res.render('pages/run');
 });
 
 // Profile Route
