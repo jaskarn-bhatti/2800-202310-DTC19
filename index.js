@@ -98,14 +98,25 @@ app.post('/login', async(req, res) => {
             throw new Error('Invalid username or password');
         }
 
-        req.session.user = { id: user._id, email: user.email, username: user.username, password: user.password };
+        req.session.user = {
+            id: user._id,
+            email: user.email,
+            username: user.username,
+            password: user.password,
+            age: user.age,
+            currentHeight: user.currentHeight,
+            currentWeight: user.currentWeight,
+            goalWeight: user.goalWeight
+        };
+
         res.redirect('/home');
 
     } catch (error) {
         console.log(error);
-        res.send('Error signing up: ${error.message}. <a href = "/signup">Try again</a>')
+        res.send(`Error signing up: ${error.message}. <a href="/signup">Try again</a>`);
     }
 });
+
 
 /* SIGNUP CODE */
 
@@ -226,6 +237,7 @@ app.get('/profile', (req, res) => {
     const currentWeight = req.session.user.currentWeight;
     const goalWeight = req.session.user.goalWeight;
 
+    console.log(username);
     console.log(req.session.user);
 
     res.render('pages/profile', { username, email, age, currentHeight, currentWeight, goalWeight });
