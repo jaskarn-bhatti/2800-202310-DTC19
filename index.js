@@ -7,6 +7,7 @@ const Joi = require('joi');
 const dotenv = require('dotenv');
 dotenv.config();
 const User = require('./models/user.js');
+const UserLog = require('./models/userLog.js');
 
 // Load the MongoDB driver and connect to the database
 var MongoDBStore = require('connect-mongodb-session')(session);
@@ -226,12 +227,59 @@ app.post('/signup-metrics', async(req, res) => {
 // Home Route
 app.get('/home', (req, res) => {
     const username = req.session.user.username;
-    res.render('pages/home', { username });
+    const exerciseSaved = req.session.exerciseSaved;
+    
+    // Clear the exerciseSaved flag in the session
+    req.session.exerciseSaved = false;
+
+    res.render('pages/home', { username, exerciseSaved });
 });
 
 // Run Page Route
 app.get('/run', (req, res) => {
     res.render('pages/run');
+});
+
+// Complete Exercise Route
+app.get('/complete-exercise', (req, res) => {
+    const totalTime = req.session.totalTime;
+    res.render('pages/complete-exercise', { totalTime });
+});
+
+// Complete Exercise Backend
+app.post('/store-time', async (req, res) => {
+    try {
+        const totalTime = req.body.totalTime;
+        const userId = req.session.user.id;
+
+        // Create a new UserLogEntry with the associated userId
+        const userLog = new UserLog({
+            userId: userId,
+            exerciseTime: totalTime
+        });
+
+        // Save the UserLogEntry to the database
+        await userLog.save();
+
+        // Fetch the user from the database
+        const user = await User.findById(userId);
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // Associate the UserLogEntry with the user
+        user.userLog.push(userLog);
+        await user.save();
+
+        // Set a flag in the session to indicate that exercise is saved
+        req.session.exerciseSaved = true;
+
+        res.redirect('/home');
+    } catch (error) {
+        console.log(error);
+        res.send('Errors');
+    }
 });
 
 // Profile Route

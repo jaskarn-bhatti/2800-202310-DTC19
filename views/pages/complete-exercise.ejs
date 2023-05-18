@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+  <h2>Exercise Completed</h2>
+  <p>Total Time Duration: <span id="totalTime"></span> seconds</p>
+  <form id="exerciseForm" method="POST" action="/store-time?time=<%= totalTime %>">
+    <input type="hidden" name="totalTime" id="hiddenTotalTime" value="<%= totalTime %>">
+    <button type="submit">Save Exercise</button>
+  </form>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+  <script>
+    // Get the reference to the totalTime and hiddenTotalTime elements
+    const totalTimeElement = document.getElementById('totalTime');
+    const hiddenTotalTimeElement = document.getElementById('hiddenTotalTime');
+
+    // Retrieve the total time from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const totalTime = urlParams.get('time');
+
+    // Update the totalTime element and hiddenTotalTime value with the actual total time
+    totalTimeElement.textContent = totalTime;
+    hiddenTotalTimeElement.value = totalTime;
+  </script>
+</footer>
+
+</body>
+</html>
