@@ -234,6 +234,11 @@ app.get('/run', (req, res) => {
     res.render('pages/run');
 });
 
+// Easter Egg Route
+app.get('/EasterEgg', (req, res) => {
+    res.render('pages/EasterEgg');
+});
+
 // Profile Route
 app.get('/profile', (req, res) => {
     const username = req.session.user.username;
