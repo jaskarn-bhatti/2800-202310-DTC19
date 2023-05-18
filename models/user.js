@@ -10,6 +10,10 @@ const usersSchema = new mongoose.Schema({
     activityLevel: String,
     dailyCalories: Number,
     goalWeight: Number,
+    userLog: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'userLog'
+    }]
 }, {
     collection: 'users'
 });

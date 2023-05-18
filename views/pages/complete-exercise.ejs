@@ -12,7 +12,7 @@
 <main>
   <h2>Exercise Completed</h2>
   <p>Total Time Duration: <span id="totalTime"></span> seconds</p>
-  <form id="exerciseForm" method="POST" action="/store-time">
+  <form id="exerciseForm" method="POST" action="/store-time?time=<%= totalTime %>">
     <input type="hidden" name="totalTime" id="hiddenTotalTime" value="<%= totalTime %>">
     <button type="submit">Save Exercise</button>
   </form>
