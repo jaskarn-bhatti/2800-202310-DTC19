@@ -235,8 +235,8 @@ app.get('/run', (req, res) => {
 });
 
 // Easter Egg Route
-app.get('/EasterEgg', (req, res) => {
-    res.render('pages/EasterEgg');
+app.get('/easter-egg', (req, res) => {
+    res.render('pages/easter-egg');
 });
 
 // Profile Route
