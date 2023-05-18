@@ -1,64 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <%- include('../partials/head'); %>
+    <%- include('../partials/head'); %>
 </head>
+
 <body class="container">
 
-<header>
-  <%- include('../partials/header'); %>
-</header>
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
 
-<main>
-  <div class="user-settings">
-    <h2 class="text-center">Settings</h2>
-    <form method="POST" action="/update-username" class="mb-4">
-      <div class="row g-2 align-items-center">
-        <div class="col-md">
-          <div class="form-outline">
-            <label class="form-label" for="username">Username:</label>
-            <input class="form-control" type="text" id="username" name="username" value=<%= username %> required>
-          </div>
-        </div>
-        <div class="col-md-auto">
-          <button class="btn btn-primary" type="submit">Change</button>
-        </div>
-      </div>
-    </form>
+    <main>
+        <div class="user-settings">
+            <h2 class="text-center">Settings</h2>
 
-    <form method="POST" action="/update-email" class="mb-4">
-      <div class="row g-2 align-items-center">
-        <div class="col-md">
-          <div class="form-outline">
-            <label class="form-label" for="email">Email:</label>
-            <input class="form-control" type="email" id="email" name="email" value=<%= email %> required>
-          </div>
-        </div>
-        <div class="col-md-auto">
-          <button class="btn btn-primary" type="submit">Change</button>
-        </div>
-      </div>
-    </form>
+            <!-- Username Change -->
+            <form method="POST" action="/update-username" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md">
+                        <div class="form-outline">
+                            <label class="form-label" for="username">Username:</label>
+                            <input class="form-control" type="string" id="username" name="username" value="<%= username %>" required>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary" type="submit">Change</button>
+                    </div>
+                </div>
+            </form>
 
-    <form method="POST" action="/update-password">
-      <div class="row g-2 align-items-center">
-        <div class="col-md">
-          <div class="form-outline">
-            <label class="form-label" for="password">Password:</label>
-            <input class="form-control" type="password" id="password" name="password" required>
-          </div>
-        </div>
-        <div class="col-md-auto">
-          <button class="btn btn-primary" type="submit">Change</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</main>
+            <!-- Email Change -->
+            <form method="POST" action="/update-email" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md">
+                        <div class="form-outline">
+                            <label class="form-label" for="email">Email:</label>
+                            <input class="form-control" type="string" id="email" name="email" value="<%= email %>" required>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary" type="submit">Change</button>
+                    </div>
+                </div>
+            </form>
 
-<footer>
-  <%- include('../partials/footer'); %>
-</footer>
+            <!-- Age Change -->
+            <form method="POST" action="/update-age" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md">
+                        <div class="form-outline">
+                            <label class="form-label" for="password">Age:</label>
+                            <input class="form-control" type="number" id="age" name="age" value="<%= age %>" required>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary" type="submit">Change</button>
+                    </div>
+                </div>
+            </form>
+
+            <!--currentHeight-->
+            <form method="POST" action="/update-currentHeight" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md">
+                        <div class="form-outline">
+                            <label class="form-label" for="password">Current Height (cm):</label>
+                            <input class="form-control" type="number" id="currentHeight" name="currentHeight" value="<%= currentHeight %>" required>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary" type="submit">Change</button>
+                    </div>
+                </div>
+            </form>
+
+            <!--currentWeight-->
+            <form method="POST" action="/update-currentWeight" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md">
+                        <div class="form-outline">
+                            <label class="form-label" for="password">Current Weight (kg):</label>
+                            <input class="form-control" type="number" id="currentWeight" name="currentWeight" value="<%= currentWeight %>" required>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary" type="submit">Change</button>
+                    </div>
+                </div>
+            </form>
+
+            <!--goalWeight-->
+            <form method="POST" action="/update-goalWeight" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md">
+                        <div class="form-outline">
+                            <label class="form-label" for="goalWeight">Goal Weight (kg):</label>
+                            <input class="form-control" type="number" id="goalWeight" name="goalWeight" value="<%= goalWeight %>" required>
+
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary" type="submit">Change</button>
+                    </div>
+                </div>
+            </form>
+
+
+            <!-- Password Change -->
+            <form method="POST" action="/update-password" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md">
+                        <div class="form-outline">
+                            <label class="form-label" for="password">Password:</label>
+                            <input class="form-control" type="password" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary" type="submit">Change</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
 
 </body>
+
 </html>
