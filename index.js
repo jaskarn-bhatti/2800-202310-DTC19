@@ -248,7 +248,12 @@ app.get('/profile', (req, res) => {
 app.get('/settings', (req, res) => {
     const username = req.session.user.username;
     const email = req.session.user.email;
-    res.render('pages/settings', { username, email });
+    const age = req.session.user.age;
+    const currentHeight = req.session.user.currentHeight;
+    const currentWeight = req.session.user.currentWeight;
+    const goalWeight = req.session.user.goalWeight;
+
+    res.render('pages/settings', { username, email, age, currentHeight, currentWeight, goalWeight });
 });
 
 // Password Update Route
@@ -273,6 +278,121 @@ app.post('/update-password', async(req, res) => {
         res.send(`Error updating password: ${error.message}. <a href="/settings">Try again</a>`);
     }
 });
+
+// Goal Weight Update Route
+app.post('/update-goalWeight', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newGoalWeight = req.body.goalWeight;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { goalWeight: newGoalWeight });
+
+        // Update the goal weight in the session
+        req.session.user.goalWeight = newGoalWeight;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating goal weight: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// current Weight Update Route
+app.post('/update-currentWeight', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newCurrentWeight = req.body.currentWeight;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { currentWeight: newCurrentWeight });
+
+        // Update the goal weight in the session
+        req.session.user.currentWeight = newCurrentWeight;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating current weight: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// current Height Update Route
+app.post('/update-currentHeight', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newCurrentHeight = req.body.currentHeight;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { currentHeight: newCurrentHeight });
+
+        // Update the goal weight in the session
+        req.session.user.currentHeight = newCurrentHeight;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating current Height: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// Age Update Route
+app.post('/update-age', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newAge = req.body.age;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { age: newAge });
+
+        // Update the goal weight in the session
+        req.session.user.age = newAge;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating age: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// Email Update Route
+app.post('/update-email', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newEmail = req.body.email;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { email: newEmail });
+
+        // Update the goal weight in the session
+        req.session.user.email = newEmail;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating email: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// Username Update Route
+app.post('/update-username', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newUsername = req.body.username;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { username: newUsername });
+
+        // Update the goal weight in the session
+        req.session.user.username = newUsername;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating username: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
 
 //Logout Route
 app.get('/logout', (req, res) => {
