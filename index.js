@@ -282,6 +282,11 @@ app.post('/store-time', async (req, res) => {
     }
 });
 
+// Easter Egg Route
+app.get('/easter-egg', (req, res) => {
+    res.render('pages/easter-egg');
+});
+
 // Profile Route
 app.get('/profile', (req, res) => {
     const username = req.session.user.username;
