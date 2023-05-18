@@ -73,3 +73,11 @@ const restartButton = document.getElementById('restartButton');
 function toggleCompleteButtonVisibility() {
   completeButton.style.display = (interval === null || time <= 0) ? 'block' : 'none';
 }
+
+// Handler function for the Complete Run button
+function completeRun() {
+  const totalTimeTaken = duration - time;
+  window.location.href = '/complete-exercise?time=' + totalTimeTaken;
+}
+
+completeButton.addEventListener('click', completeRun);
