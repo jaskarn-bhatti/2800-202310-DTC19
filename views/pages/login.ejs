@@ -3,34 +3,33 @@
 <head>
   <%- include('../partials/head'); %>
 </head>
-<body class="container">
+<body class="container mt-5">
 
 <header>
-  <div class="header">
-    <h1>FitTrack</h1>
+  <div class="header text-center">
+    <h1>Welcome to FitTrack</h1>
   </div>  
 </header>
 
 <main>
   <div class="login">
-    <h2 class="text-center">Login</h1>
-    <form action="/login" method="POST">
-        <div class="form-outline mb-4">
-          <label class="form-label" for ="username">Username</label>
-          <input class="form-control" type="text" name="username" id="username" required><br>  
+    <h2 class="text-center">Login</h2>
+    <form action="/login" method="POST" class="mx-auto my-4 p-4" style="max-width: 500px;">
+        <div class="form-group mb-3">
+          <label for="username">Username</label>
+          <input class="form-control" type="text" name="username" id="username" required>  
         </div>
 
-        <div class="form-outline mb-4">
-          <label class="form-label" for ="password">Password</label>
-          <input class="form-control" type="password" name="password" id="password" required><br>
+        <div class="form-group mb-3">
+          <label for="password">Password</label>
+          <input class="form-control" type="password" name="password" id="password" required>
         </div>
 
-        <input class="form-control" type="submit" value="Login">
+        <input class="btn btn-primary btn-block w-100 btn-lg" type="submit" value="Login">
     </form>
-    <div class="text-center">
-      <a href="/signup">Sign up</a>
+    <div class="text-center mt-3">
+      <a class="btn btn-secondary" href="/signup">Sign up</a>
     </div>
-
   </div>
 </main>
 

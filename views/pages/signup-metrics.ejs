@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container mt-5">
+
+<header>
+  <div class="header text-center">
+    <h1>FitTrack</h1>
+  </div>  
+</header>
+
+<main>
+  <div class="signup">
+    <h2 class="text-center">Enter Your Information</h2>
+    <form action="/signup-metrics" method="POST" class="mx-auto my-4 p-4" style="max-width: 500px;">
+        <div class="form-group mb-3">
+          <label for="age">Age</label>
+          <input class="form-control" type="number" name="age" id="age" required>  
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="currentWeight">Current Weight (kg)</label>
+          <input class="form-control" type="number" name="currentWeight" id="currentWeight" required>  
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="currentHeight">Current Height (cm)</label>
+          <input class="form-control" type="number" name="currentHeight" id="currentHeight" required>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="activityLevel">Activity Level</label>
+          <select class="form-control" name="activityLevel" id="activityLevel" required>
+            <option value="sedentary">Sedentary</option>
+            <option value="lightlyActive">Lightly Active</option>
+            <option value="moderatelyActive">Moderately Active</option>
+            <option value="veryActive">Very Active</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="dailyCalories">Daily Calorie Goals</label>
+          <input class="form-control" type="number" name="dailyCalories" id="dailyCalories" required>  
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="goalWeight">Goal Weight (kg)</label>
+          <input class="form-control" type="number" name="goalWeight" id="goalWeight" required>  
+        </div>
+
+        <input class="btn btn-primary btn-block w-100 btn-lg" type="submit" value="Complete">
+    </form>
+  </div>
+</main>
+
+<footer>
+
+</footer>
+
+</body>
+</html>

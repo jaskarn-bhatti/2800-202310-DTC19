@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+  <link rel="stylesheet" href="/public/css/easter-egg.css">
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <section>
+      <h2 class="text-center mb-3">Surprise</h2>
+      <p class="text-center">You found the hidden game! Collect as much shoes as you can in 30 seconds!</p>
+    </section>
+    
+    <div id="game-container">
+    </div>
+    <div id="score" class="score-display"></div>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+  
+</footer>
+
+<script src="/public/scripts/easteregg-script.js"></script>
+</body>
+</html>

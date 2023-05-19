@@ -7,6 +7,7 @@ const Joi = require('joi');
 const dotenv = require('dotenv');
 dotenv.config();
 const User = require('./models/user.js');
+const UserLog = require('./models/userLog.js');
 
 // Load the MongoDB driver and connect to the database
 var MongoDBStore = require('connect-mongodb-session')(session);
@@ -17,8 +18,10 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 // Static Files
-app.use(express.static('public'))
-app.use('/css', express.static(__dirname + 'public/css'))
+app.use('/public', express.static(__dirname + "/public"));
+app.use('/css', express.static(__dirname + 'public/css'));
+app.use('/icons', express.static(__dirname + 'public/icons'));
+app.use('/scripts', express.static(__dirname + 'public/scripts'));
 
 // Set up database connections
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`, { useNewUrlParser: true });
@@ -97,14 +100,25 @@ app.post('/login', async(req, res) => {
             throw new Error('Invalid username or password');
         }
 
-        req.session.user = { id: user._id, email: user.email, username: user.username, password: user.password };
+        req.session.user = {
+            id: user._id,
+            email: user.email,
+            username: user.username,
+            password: user.password,
+            age: user.age,
+            currentHeight: user.currentHeight,
+            currentWeight: user.currentWeight,
+            goalWeight: user.goalWeight
+        };
+
         res.redirect('/home');
 
     } catch (error) {
         console.log(error);
-        res.send('Error signing up: ${error.message}. <a href = "/signup">Try again</a>')
+        res.send(`Error signing up: ${error.message}. <a href="/signup">Try again</a>`);
     }
 });
+
 
 /* SIGNUP CODE */
 
@@ -144,7 +158,7 @@ app.post('/signup', async(req, res) => {
 
         await user.save();
         req.session.user = { id: user._id, email: user.email, username: user.username, password: user.password };
-        res.redirect('/home');
+        res.redirect('/signup-metrics');
 
     } catch (error) {
         console.log(error);
@@ -152,47 +166,292 @@ app.post('/signup', async(req, res) => {
     }
 });
 
+// Signup - User Metrics Route
+app.get('/signup-metrics', (req, res) => {
+    res.render('pages/signup-metrics');
+});
+
+// Signup - User Metrics Schema
+const signUpMetricsSchema = Joi.object({
+    age: Joi.number().integer().positive().required(),
+    currentWeight: Joi.number().positive().required(),
+    currentHeight: Joi.number().positive().required(),
+    activityLevel: Joi.string().valid('sedentary', 'lightly active', 'moderately active', 'very active').required(),
+    dailyCalories: Joi.number().positive().required(),
+    goalWeight: Joi.number().positive().required()
+});
+
+
+// Signup - User Metrics Backend
+app.post('/signup-metrics', async(req, res) => {
+    try {
+        const userID = req.session.user.id;
+        var age = req.body.age;
+        var currentWeight = req.body.currentWeight;
+        var currentHeight = req.body.currentHeight;
+        var activityLevel = req.body.activityLevel;
+        var dailyCalories = req.body.dailyCalories;
+        var goalWeight = req.body.goalWeight;
+
+        const { error } = signUpMetricsSchema.validate({ age, currentWeight, currentHeight, activityLevel, dailyCalories, goalWeight });
+        if (error) {
+            throw new Error(error.details[0].message);
+        }
+
+        User.db = usersDb;
+
+        await User.findOneAndUpdate({ _id: userID }, {
+            age: age,
+            currentWeight: currentWeight,
+            currentHeight: currentHeight,
+            activityLevel: activityLevel,
+            dailyCalories: dailyCalories,
+            goalWeight: goalWeight
+        });
+
+        var id = req.session.user.id;
+        var email = req.session.user.email;
+        var username = req.session.user.username;
+        var password = req.session.user.password;
+
+        req.session.user = { id: id, email: email, username: username, password: password, age: age, currentWeight: currentWeight, currentHeight: currentHeight, activityLevel: activityLevel, dailyCalories: dailyCalories, goalWeight: goalWeight };
+
+        res.redirect('/home');
+
+    } catch (error) {
+        console.log(error);
+        res.send('Errors');
+    }
+});
+
 // Home Route
 app.get('/home', (req, res) => {
     const username = req.session.user.username;
-    res.render('pages/home', {username});
+    const exerciseSaved = req.session.exerciseSaved;
+    
+    // Clear the exerciseSaved flag in the session
+    req.session.exerciseSaved = false;
+
+    res.render('pages/home', { username, exerciseSaved });
+});
+
+// Run Page Route
+app.get('/run', (req, res) => {
+    res.render('pages/run');
+});
+
+// Complete Exercise Route
+app.get('/complete-exercise', (req, res) => {
+    const totalTime = req.session.totalTime;
+    res.render('pages/complete-exercise', { totalTime });
+});
+
+// Complete Exercise Backend
+app.post('/store-time', async (req, res) => {
+    try {
+        const totalTime = req.body.totalTime;
+        const userId = req.session.user.id;
+
+        // Create a new UserLogEntry with the associated userId
+        const userLog = new UserLog({
+            userId: userId,
+            exerciseTime: totalTime
+        });
+
+        // Save the UserLogEntry to the database
+        await userLog.save();
+
+        // Fetch the user from the database
+        const user = await User.findById(userId);
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // Associate the UserLogEntry with the user
+        user.userLog.push(userLog);
+        await user.save();
+
+        // Set a flag in the session to indicate that exercise is saved
+        req.session.exerciseSaved = true;
+
+        res.redirect('/home');
+    } catch (error) {
+        console.log(error);
+        res.send('Errors');
+    }
+});
+
+// Easter Egg Route
+app.get('/easter-egg', (req, res) => {
+    res.render('pages/easter-egg');
 });
 
 // Profile Route
 app.get('/profile', (req, res) => {
     const username = req.session.user.username;
-    res.render('pages/profile', {username});
+    const email = req.session.user.email;
+    const age = req.session.user.age;
+    const currentHeight = req.session.user.currentHeight;
+    const currentWeight = req.session.user.currentWeight;
+    const goalWeight = req.session.user.goalWeight;
+
+    console.log(username);
+    console.log(req.session.user);
+
+    res.render('pages/profile', { username, email, age, currentHeight, currentWeight, goalWeight });
 });
+
 
 // Settings Route
 app.get('/settings', (req, res) => {
     const username = req.session.user.username;
     const email = req.session.user.email;
-    res.render('pages/settings', {username, email});
+    const age = req.session.user.age;
+    const currentHeight = req.session.user.currentHeight;
+    const currentWeight = req.session.user.currentWeight;
+    const goalWeight = req.session.user.goalWeight;
+
+    res.render('pages/settings', { username, email, age, currentHeight, currentWeight, goalWeight });
 });
 
 // Password Update Route
-app.post('/update-password', async (req, res) => {
+app.post('/update-password', async(req, res) => {
     try {
-      const user = req.session.user;
-      const newPassword = req.body.password;
-  
-      // Hash the new password
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(newPassword, salt);
-  
-      // Update the user's password in the database
-      await User.updateOne({ _id: user.id }, { password: hashedPassword });
-  
-      // Update the password in the session
-      req.session.user.password = hashedPassword;
-  
-      res.redirect('/settings');
+        const user = req.session.user;
+        const newPassword = req.body.password;
+
+        // Hash the new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        // Update the user's password in the database
+        await User.updateOne({ _id: user.id }, { password: hashedPassword });
+
+        // Update the password in the session
+        req.session.user.password = hashedPassword;
+
+        res.redirect('/settings');
     } catch (error) {
-      console.error(error);
-      res.send(`Error updating password: ${error.message}. <a href="/settings">Try again</a>`);
+        console.error(error);
+        res.send(`Error updating password: ${error.message}. <a href="/settings">Try again</a>`);
     }
 });
+
+// Goal Weight Update Route
+app.post('/update-goalWeight', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newGoalWeight = req.body.goalWeight;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { goalWeight: newGoalWeight });
+
+        // Update the goal weight in the session
+        req.session.user.goalWeight = newGoalWeight;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating goal weight: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// current Weight Update Route
+app.post('/update-currentWeight', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newCurrentWeight = req.body.currentWeight;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { currentWeight: newCurrentWeight });
+
+        // Update the goal weight in the session
+        req.session.user.currentWeight = newCurrentWeight;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating current weight: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// current Height Update Route
+app.post('/update-currentHeight', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newCurrentHeight = req.body.currentHeight;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { currentHeight: newCurrentHeight });
+
+        // Update the goal weight in the session
+        req.session.user.currentHeight = newCurrentHeight;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating current Height: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// Age Update Route
+app.post('/update-age', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newAge = req.body.age;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { age: newAge });
+
+        // Update the goal weight in the session
+        req.session.user.age = newAge;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating age: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// Email Update Route
+app.post('/update-email', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newEmail = req.body.email;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { email: newEmail });
+
+        // Update the goal weight in the session
+        req.session.user.email = newEmail;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating email: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
+// Username Update Route
+app.post('/update-username', async(req, res) => {
+    try {
+        const user = req.session.user;
+        const newUsername = req.body.username;
+
+        // Update the user's goal weight in the database
+        await User.updateOne({ _id: user.id }, { username: newUsername });
+
+        // Update the goal weight in the session
+        req.session.user.username = newUsername;
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.send(`Error updating username: ${error.message}. <a href="/settings">Try again</a>`);
+    }
+});
+
 
 //Logout Route
 app.get('/logout', (req, res) => {

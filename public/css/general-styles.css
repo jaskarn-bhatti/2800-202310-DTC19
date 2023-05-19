@@ -1,0 +1,31 @@
+/* FONT */
+nav {
+    font-family: 'Poltawski Nowy', serif;
+}
+
+.welcomeText {
+    font-family: 'Roboto Mono', monospace;
+}
+
+
+/* GENERAL */
+
+.navbar-brand {
+    font-size: x-large;
+    margin-bottom: 0;
+}
+.nav-link{
+    font-size: x-large;
+}
+
+.bg-lighter {
+    background-color: #3da5ff;
+}
+
+.container {
+    padding: 0;
+}
+
+main {
+    margin-bottom: 100px;
+}
