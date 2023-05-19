@@ -9,12 +9,19 @@
   <%- include('../partials/header'); %>
 </header>
 
-<main>
+<main class="d-flex flex-column align-items-center justify-content-center text-center mx-auto">
   <h2>Exercise Completed</h2>
-  <p>Total Time Duration: <span id="totalTime"></span> seconds</p>
-  <form id="exerciseForm" method="POST" action="/store-time?time=<%= totalTime %>">
+  <table class="table table-bordered w-50 mt-4">
+    <tr>
+      <th>Total Time Duration</th>
+    </tr>
+    <tr>
+      <td><span id="totalTime"></span> seconds</td>
+    </tr>
+  </table>
+  <form id="exerciseForm" method="POST" action="/store-time?time=<%= totalTime %>" class="mt-4">
     <input type="hidden" name="totalTime" id="hiddenTotalTime" value="<%= totalTime %>">
-    <button type="submit">Save Exercise</button>
+    <button type="submit" class="btn btn-primary btn-lg">Save Exercise</button>
   </form>
 </main>
 

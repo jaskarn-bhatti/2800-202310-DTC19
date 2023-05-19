@@ -3,11 +3,6 @@
 
 <head>
   <%- include('../partials/head'); %>
-  <style>
-    body {
-      background-color: #eee;
-    }
-  </style>
 </head>
 
 <body class="container">
@@ -25,12 +20,12 @@
 
     <!-- Bootstrap -->
     <div class="col-md-12 text-center">
-      <h2 class="mt-5">Welcome <%= username %></h2>
+      <h2 class="mt-5 welcomeText">Welcome <%= username %></h2>
 
       <div class="col-md-12 d-flex justify-content-center align-items-center flex-column" style="height: 100vh;">
-        <a href="#" class="btn btn-primary btn-lg disabled w-100 mb-2" role="button" tabindex="0" aria-disabled="true">RUN</a>
-        <a href="#" class="btn btn-primary btn-lg disabled w-100 mb-2" role="button" tabindex="1" aria-disabled="true">Progress</a>
-        <a href="#" class="btn btn-primary btn-lg disabled w-100 mb-2" role="button" tabindex="2" aria-disabled="true">Recommendations</a>
+        <a href="/run" class="btn btn-primary btn-lg w-100 mb-4" role="button" tabindex="0" aria-disabled="true">RUN</a>
+        <a href="#" class="btn btn-primary btn-lg disabled w-100 mb-4" role="button" tabindex="1" aria-disabled="true">Progress</a>
+        <a href="#" class="btn btn-primary btn-lg disabled w-100 mb-4" role="button" tabindex="2" aria-disabled="true">Recommendations</a>
       </div>
     </div>
   </main>

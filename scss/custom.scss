@@ -1,7 +1,4 @@
-@import "../node_modules/bootstrap/scss/functions";
+$primary: #68b4f7;
 
-$primary: #4da3ee;
-
-$theme-colors: (
-  "custom-color": #900
-);
+// Bootstrap and its default variables
+@import "/node_modules/bootstrap/scss/bootstrap.scss";  

@@ -3,53 +3,56 @@
 <head>
   <%- include('../partials/head'); %>
 </head>
-<body class="container">
+<body class="container mt-5">
 
 <header>
-  <div class="header">
+  <div class="header text-center">
     <h1>FitTrack</h1>
   </div>  
 </header>
 
 <main>
-    <h2>Enter your information</h1>
-  <form action="/signup-metrics" method="POST">
-    <label for="age">Age:</label>
-    <input type="number" name="age" id="age" required>
-    <br>
+  <div class="signup">
+    <h2 class="text-center">Enter Your Information</h2>
+    <form action="/signup-metrics" method="POST" class="mx-auto my-4 p-4" style="max-width: 500px;">
+        <div class="form-group mb-3">
+          <label for="age">Age</label>
+          <input class="form-control" type="number" name="age" id="age" required>  
+        </div>
 
-    <label for="currentWeight">Current Weight (kg):</label>
-    <input type="number" name="currentWeight" id="currentWeight" required>
-    <br>
+        <div class="form-group mb-3">
+          <label for="currentWeight">Current Weight (kg)</label>
+          <input class="form-control" type="number" name="currentWeight" id="currentWeight" required>  
+        </div>
 
-    <label for="currentHeight">Current Height (cm):</label>
-    <select name="currentHeight" id="currentHeight" required>
-      <option value="150">150 cm</option>
-      <option value="160">160 cm</option>
-      <option value="170">170 cm</option>
-      <!-- Add more options as needed -->
-    </select>
-    <br>
+        <div class="form-group mb-3">
+          <label for="currentHeight">Current Height (cm)</label>
+          <input class="form-control" type="number" name="currentHeight" id="currentHeight" required>
+        </div>
 
-    <label for="activityLevel">Activity Level:</label>
-    <select name="activityLevel" id="activityLevel" required>
-      <option value="sedentary">Sedentary</option>
-      <option value="lightlyActive">Lightly Active</option>
-      <option value="moderatelyActive">Moderately Active</option>
-      <option value="veryActive">Very Active</option>
-      <!-- Add more options as needed -->
-    </select>
-    <br>
+        <div class="form-group mb-3">
+          <label for="activityLevel">Activity Level</label>
+          <select class="form-control" name="activityLevel" id="activityLevel" required>
+            <option value="sedentary">Sedentary</option>
+            <option value="lightlyActive">Lightly Active</option>
+            <option value="moderatelyActive">Moderately Active</option>
+            <option value="veryActive">Very Active</option>
+          </select>
+        </div>
 
-    <label for="dailyCalories">Daily Calorie Goals:</label>
-    <input type="number" name="dailyCalories" id="dailyCalories" required>
-    <br>
+        <div class="form-group mb-3">
+          <label for="dailyCalories">Daily Calorie Goals</label>
+          <input class="form-control" type="number" name="dailyCalories" id="dailyCalories" required>  
+        </div>
 
-    <label for="goalWeight">Goal Weight (kg):</label>
-    <input type="number" name="goalWeight" id="goalWeight" required>
-    <br>
+        <div class="form-group mb-3">
+          <label for="goalWeight">Goal Weight (kg)</label>
+          <input class="form-control" type="number" name="goalWeight" id="goalWeight" required>  
+        </div>
 
-    <input type="submit" value="Complete">
+        <input class="btn btn-primary btn-block w-100 btn-lg" type="submit" value="Complete">
+    </form>
+  </div>
 </main>
 
 <footer>

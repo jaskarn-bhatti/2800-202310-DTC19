@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     icon.className = 'icon';
     var containerWidth = gameContainer.offsetWidth;
     var containerHeight = gameContainer.offsetHeight;
-    var iconSize = Math.min(containerWidth, containerHeight) * 0.1; // Adjust the scale factor as needed
+    var iconSize = Math.min(containerWidth, containerHeight) * 0.15; // Adjust the scale factor as needed
     icon.style.width = iconSize + 'px';
     icon.style.height = iconSize + 'px';
     icon.style.left = getRandomPosition(0, containerWidth - iconSize) + 'px';
