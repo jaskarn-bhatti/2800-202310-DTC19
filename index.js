@@ -243,7 +243,20 @@ app.get('/run', (req, res) => {
 // Complete Exercise Route
 app.get('/complete-exercise', (req, res) => {
     const totalTime = req.session.totalTime;
-    res.render('pages/complete-exercise', { totalTime });
+    const userAge = req.session.user.age;
+    const userWeight = req.session.user.currentWeight;
+    const userHeight = req.session.user.currentHeight;
+    const userActivityLevel = req.session.user.activityLevel;
+
+    res.render('pages/complete-exercise', { 
+        totalTime,
+        user: {
+            age: userAge,
+            weight: userWeight,
+            height: userHeight,
+            activityLevel: userActivityLevel
+        }     
+    });
 });
 
 // Complete Exercise Backend

@@ -14,13 +14,32 @@
   <table class="table table-bordered w-50 mt-4">
     <tr>
       <th>Total Time Duration</th>
+      <th>Steps Taken</th>
+      <th>Exercise Type</th>
+      <th>Calories Burned</th>
     </tr>
     <tr>
       <td><span id="totalTime"></span> seconds</td>
+      <td>
+        <input type="number" name="stepsTaken" id="stepsTaken" min="0" required>
+      </td>
+      <td>
+        <select name="exerciseType" id="exerciseType" required>
+          <option value="run">Run</option>
+          <option value="walk">Walk</option>
+        </select>
+      </td>
+      <td><span id="caloriesBurned"></span> calories</td>
     </tr>
   </table>
-  <form id="exerciseForm" method="POST" action="/store-time?time=<%= totalTime %>" class="mt-4">
+  <form id="exerciseForm" method="POST" action="/store-time" class="mt-4">
+    <input type="hidden" id="userWeight" data-weight="<%= user.weight %>">
+    <input type="hidden" id="userAge" data-age="<%= user.age %>">
+    <input type="hidden" id="userHeight" data-height="<%= user.height %>">
+    <input type="hidden" name="userActivityLevel" value="<%= user.activityLevel %>">
+  
     <input type="hidden" name="totalTime" id="hiddenTotalTime" value="<%= totalTime %>">
+    <input type="hidden" name="caloriesBurned" id="hiddenCaloriesBurned">
     <button type="submit" class="btn btn-primary btn-lg">Save Exercise</button>
   </form>
 </main>
