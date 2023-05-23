@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="container mt-5">
+      <h2>Progress</h2>
+    </div>
+  
+    <div class="container mt-4">
+      <div class="card">
+        <div class="card-body">
+          <form action="/progress" method="GET">
+            <div class="mb-3">
+              <label for="datetime" class="form-label">Select date and time:</label>
+              <select name="datetime" id="datetime" class="form-select">
+                <% for (const userLog of userLogs) { %>
+                  <% const formattedDateTime = userLog.date.toLocaleString(); %>
+                  <option value="<%= userLog._id %>" <%= selectedLog && selectedLog._id.toString() === userLog._id.toString() ? 'selected' : '' %>><%= formattedDateTime %></option>
+                <% } %>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">View Progress</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+    <% if (selectedLog) { %>
+      <div class="container mt-4">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Selected Log - <%= selectedLog.date.toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' }) %></h2>
+            <p class="card-text">Exercise Time: <%= selectedLog.exerciseTime %> seconds</p>
+            <p class="card-text">Steps Taken: <%= selectedLog.stepsTaken %></p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+
+</body>
+</html>

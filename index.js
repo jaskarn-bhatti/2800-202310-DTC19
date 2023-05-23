@@ -282,6 +282,27 @@ app.post('/store-time', async (req, res) => {
     }
 });
 
+// Progress Route
+app.get('/progress', async (req, res) => {
+    try {
+      const userId = req.session.user.id;
+      const selectedLogId = req.query.datetime;
+  
+      // Retrieve the user's logs from the UserLog collection
+      const userLogs = await UserLog.find({ userId });
+  
+      let selectedLog;
+      if (selectedLogId) {
+        selectedLog = await UserLog.findById(selectedLogId);
+      }
+  
+      res.render('pages/progress', { userLogs, selectedLog });
+    } catch (error) {
+      console.error(error);
+      res.send('Error retrieving progress');
+    }
+});
+
 // Easter Egg Route
 app.get('/easter-egg', (req, res) => {
     res.render('pages/easter-egg');
