@@ -247,17 +247,17 @@ app.get('/complete-exercise', (req, res) => {
     const userWeight = req.session.user.currentWeight;
     const userHeight = req.session.user.currentHeight;
     const userActivityLevel = req.session.user.activityLevel;
-
+  
     res.render('pages/complete-exercise', { 
-        totalTime,
-        user: {
-            age: userAge,
-            weight: userWeight,
-            height: userHeight,
-            activityLevel: userActivityLevel
-        }     
+      totalTime,
+      user: {
+        age: userAge,
+        weight: userWeight,
+        height: userHeight,
+        activityLevel: userActivityLevel
+      }     
     });
-});
+});;
 
 // Complete Exercise Backend
 app.post('/store-time', async (req, res) => {
