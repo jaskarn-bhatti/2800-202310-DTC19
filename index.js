@@ -306,13 +306,6 @@ app.get('/home', async(req, res) => {
     }
 });
 
-
-
-
-
-
-
-
 // Run Page Route
 app.get('/run', (req, res) => {
     res.render('pages/run');
