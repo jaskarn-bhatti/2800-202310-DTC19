@@ -61,6 +61,16 @@ app.get('/', (req, res) => {
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
+// Error Page 
+app.use((err, req, res, next) => {
+    const errorMessage = err.message || 'An error occurred';
+    res.redirect(`pages/error?message=${encodeURIComponent(errorMessage)}`);
+});
+
+app.get('/error', (req, res) => {
+    const errorMessage = req.query.message || 'An error occurred';
+    res.render('pages/error', { message: errorMessage });
+});
 
 /* LOGIN CODE */
 
@@ -115,7 +125,7 @@ app.post('/login', async(req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.send(`Error signing up: ${error.message}. <a href="/signup">Try again</a>`);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -162,7 +172,7 @@ app.post('/signup', async(req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.send('Error signing up: $ { error.message }. < a href = "/signup" > Try again < /a>');
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -220,7 +230,7 @@ app.post('/signup-metrics', async(req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.send('Errors');
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -228,7 +238,7 @@ app.post('/signup-metrics', async(req, res) => {
 app.get('/home', (req, res) => {
     const username = req.session.user.username;
     const exerciseSaved = req.session.exerciseSaved;
-    
+
     // Clear the exerciseSaved flag in the session
     req.session.exerciseSaved = false;
 
@@ -247,20 +257,20 @@ app.get('/complete-exercise', (req, res) => {
     const userWeight = req.session.user.currentWeight;
     const userHeight = req.session.user.currentHeight;
     const userActivityLevel = req.session.user.activityLevel;
-  
-    res.render('pages/complete-exercise', { 
-      totalTime,
-      user: {
-        age: userAge,
-        weight: userWeight,
-        height: userHeight,
-        activityLevel: userActivityLevel
-      }     
+
+    res.render('pages/complete-exercise', {
+        totalTime,
+        user: {
+            age: userAge,
+            weight: userWeight,
+            height: userHeight,
+            activityLevel: userActivityLevel
+        }
     });
 });;
 
 // Complete Exercise Backend
-app.post('/store-time', async (req, res) => {
+app.post('/store-time', async(req, res) => {
     try {
         const userId = req.session.user.id;
         const totalTime = req.body.totalTime;
@@ -297,28 +307,28 @@ app.post('/store-time', async (req, res) => {
         res.redirect('/home');
     } catch (error) {
         console.log(error);
-        res.send('Errors');
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
 // Progress Route
-app.get('/progress', async (req, res) => {
+app.get('/progress', async(req, res) => {
     try {
-      const userId = req.session.user.id;
-      const selectedLogId = req.query.datetime;
-  
-      // Retrieve the user's logs from the UserLog collection
-      const userLogs = await UserLog.find({ userId });
-  
-      let selectedLog;
-      if (selectedLogId) {
-        selectedLog = await UserLog.findById(selectedLogId);
-      }
-  
-      res.render('pages/progress', { userLogs, selectedLog });
+        const userId = req.session.user.id;
+        const selectedLogId = req.query.datetime;
+
+        // Retrieve the user's logs from the UserLog collection
+        const userLogs = await UserLog.find({ userId });
+
+        let selectedLog;
+        if (selectedLogId) {
+            selectedLog = await UserLog.findById(selectedLogId);
+        }
+
+        res.render('pages/progress', { userLogs, selectedLog });
     } catch (error) {
-      console.error(error);
-      res.send('Error retrieving progress');
+        console.log(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -373,8 +383,8 @@ app.post('/update-password', async(req, res) => {
 
         res.redirect('/settings');
     } catch (error) {
-        console.error(error);
-        res.send(`Error updating password: ${error.message}. <a href="/settings">Try again</a>`);
+        console.log(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -392,8 +402,8 @@ app.post('/update-goalWeight', async(req, res) => {
 
         res.redirect('/settings');
     } catch (error) {
-        console.error(error);
-        res.send(`Error updating goal weight: ${error.message}. <a href="/settings">Try again</a>`);
+        console.log(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -411,8 +421,8 @@ app.post('/update-currentWeight', async(req, res) => {
 
         res.redirect('/settings');
     } catch (error) {
-        console.error(error);
-        res.send(`Error updating current weight: ${error.message}. <a href="/settings">Try again</a>`);
+        console.log(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -430,8 +440,8 @@ app.post('/update-currentHeight', async(req, res) => {
 
         res.redirect('/settings');
     } catch (error) {
-        console.error(error);
-        res.send(`Error updating current Height: ${error.message}. <a href="/settings">Try again</a>`);
+        console.log(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -449,8 +459,8 @@ app.post('/update-age', async(req, res) => {
 
         res.redirect('/settings');
     } catch (error) {
-        console.error(error);
-        res.send(`Error updating age: ${error.message}. <a href="/settings">Try again</a>`);
+        console.log(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -468,8 +478,8 @@ app.post('/update-email', async(req, res) => {
 
         res.redirect('/settings');
     } catch (error) {
-        console.error(error);
-        res.send(`Error updating email: ${error.message}. <a href="/settings">Try again</a>`);
+        console.log(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -487,8 +497,8 @@ app.post('/update-username', async(req, res) => {
 
         res.redirect('/settings');
     } catch (error) {
-        console.error(error);
-        res.send(`Error updating username: ${error.message}. <a href="/settings">Try again</a>`);
+        console.log(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
 
