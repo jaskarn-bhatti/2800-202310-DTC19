@@ -287,14 +287,12 @@ app.get('/home', requireLogin, async(req, res) => {
 
 
 // Run Page Route
-app.get('/run', (req, res) => {
-    requireLogin(req, res);
+app.get('/run', requireLogin, (req, res) => {
     res.render('pages/run');
 });
 
 // Complete Exercise Route
-app.get('/complete-exercise', (req, res) => {
-    requireLogin(req, res);
+app.get('/complete-exercise', requireLogin, (req, res) => {
     const totalTime = req.session.totalTime;
     const userAge = req.session.user.age;
     const userWeight = req.session.user.currentWeight;
@@ -376,8 +374,7 @@ app.get('/progress', requireLogin, async(req, res) => {
 });
 
 // Easter Egg Route
-app.get('/easter-egg', (req, res) => {
-    requireLogin(req, res);
+app.get('/easter-egg', requireLogin, (req, res) => {
     res.render('pages/easter-egg');
 });
 
