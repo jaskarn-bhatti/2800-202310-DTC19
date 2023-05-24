@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const User = require('./models/user.js');
 const UserLog = require('./models/userLog.js');
+const { channel } = require('diagnostics_channel');
 
 // Load the MongoDB driver and connect to the database
 var MongoDBStore = require('connect-mongodb-session')(session);
@@ -46,6 +47,16 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24, // 1 day
     }
 }));
+
+// Middleware function to check if the user is logged in
+const requireLogin = (req, res, next) => {
+    if (!req.session.user) {
+      res.redirect('/login');
+      return;
+    } else {
+      next();
+    }
+};
 
 // Root Route
 app.get('/', (req, res) => {
@@ -186,7 +197,7 @@ const signUpMetricsSchema = Joi.object({
     age: Joi.number().integer().positive().required(),
     currentWeight: Joi.number().positive().required(),
     currentHeight: Joi.number().positive().required(),
-    activityLevel: Joi.string().valid('sedentary', 'lightly active', 'moderately active', 'very active').required(),
+    activityLevel: Joi.string().valid('sedentary', 'lightlyActive', 'moderatelyActive', 'veryActive').required(),
     dailyCalories: Joi.number().positive().required(),
     goalWeight: Joi.number().positive().required()
 });
@@ -235,7 +246,7 @@ app.post('/signup-metrics', async(req, res) => {
 });
 
 // Home Route
-app.get('/home', async(req, res) => {
+app.get('/home', requireLogin, async(req, res) => {
     try {
         const username = req.session.user.username;
         const exerciseSaved = req.session.exerciseSaved;
@@ -277,11 +288,13 @@ app.get('/home', async(req, res) => {
 
 // Run Page Route
 app.get('/run', (req, res) => {
+    requireLogin(req, res);
     res.render('pages/run');
 });
 
 // Complete Exercise Route
 app.get('/complete-exercise', (req, res) => {
+    requireLogin(req, res);
     const totalTime = req.session.totalTime;
     const userAge = req.session.user.age;
     const userWeight = req.session.user.currentWeight;
@@ -342,7 +355,7 @@ app.post('/store-time', async(req, res) => {
 });
 
 // Progress Route
-app.get('/progress', async(req, res) => {
+app.get('/progress', requireLogin, async(req, res) => {
     try {
         const userId = req.session.user.id;
         const selectedLogId = req.query.datetime;
@@ -364,11 +377,12 @@ app.get('/progress', async(req, res) => {
 
 // Easter Egg Route
 app.get('/easter-egg', (req, res) => {
+    requireLogin(req, res);
     res.render('pages/easter-egg');
 });
 
 // Profile Route
-app.get('/profile', (req, res) => {
+app.get('/profile', requireLogin, (req, res) => {
     const username = req.session.user.username;
     const email = req.session.user.email;
     const age = req.session.user.age;
@@ -384,7 +398,7 @@ app.get('/profile', (req, res) => {
 
 
 // Settings Route
-app.get('/settings', (req, res) => {
+app.get('/settings', requireLogin, (req, res) => {
     const username = req.session.user.username;
     const email = req.session.user.email;
     const age = req.session.user.age;

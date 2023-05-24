@@ -38,6 +38,7 @@ function calculateCaloriesBurned() {
     const exerciseType = exerciseTypeElement.value;
     let caloriesBurned = 0;
     let baseMETVal = 0;
+    let stepsPerKm = 0;
 
     // Update the hidden input fields
     hiddenStepsTakenElement.value = stepsTaken;
@@ -56,26 +57,35 @@ function calculateCaloriesBurned() {
     const activityModifier = getActivityMultiplier(activityLevel);
 
     if (exerciseType === 'run') {
-        baseMETVal = 7;
+        baseMETVal = 10.5; // Running MET value sourced from https://golf.procon.org/met-values-for-800-activities/
+        stepsPerKm = 1050; // Average of steps per km for running
     } else if (exerciseType === 'walk') {
-        baseMETVal = 3.5;
+        baseMETVal = 3.5; // Walking MET value sourced from https://golf.procon.org/met-values-for-800-activities/
+        stepsPerKm = 1350; // Average of steps per km for walking
     }
 
-    const runDurationHours = parseInt(totalTime) / 3600;
-    const totalMETHours = runDurationHours * baseMETVal;
+    const exerciseDurationMinutes = parseInt(totalTime) / 60;
+    const estimatedDistanceKm = stepsTaken / stepsPerKm;
+
+    const baselineCaloriesBurned = (exerciseDurationMinutes * baseMETVal * weight) / 60;
+    const adjustedCaloriesBurned = baselineCaloriesBurned * activityModifier;
+
     if (isNaN(stepsTaken)) {
         // Set caloriesBurned to 0 if stepsTaken is NaN or blank
         caloriesBurned = 0;
     } else {
-        caloriesBurned = totalMETHours * (0.035 * weight + 0.029 * age - 0.026 * height + 0.193) * stepsTaken * activityModifier;
+        caloriesBurned = adjustedCaloriesBurned * estimatedDistanceKm;
     }
+
+    // Round the result to the nearest integer
+    roundedCaloriesBurned = Math.round(caloriesBurned);
 
     // Enable the save exercise button
     saveExerciseButton.disabled = false;
 
     // Update the caloriesBurned element and hiddenCaloriesBurned value
-    caloriesBurnedElement.textContent = caloriesBurned.toFixed(2);
-    hiddenCaloriesBurnedElement.value = caloriesBurned;
+    caloriesBurnedElement.textContent = roundedCaloriesBurned;
+    hiddenCaloriesBurnedElement.value = roundedCaloriesBurned;
 }
 
 // Add event listeners to stepsTaken and exerciseType elements
