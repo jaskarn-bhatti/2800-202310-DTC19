@@ -186,7 +186,7 @@ const signUpMetricsSchema = Joi.object({
     age: Joi.number().integer().positive().required(),
     currentWeight: Joi.number().positive().required(),
     currentHeight: Joi.number().positive().required(),
-    activityLevel: Joi.string().valid('sedentary', 'lightly active', 'moderately active', 'very active').required(),
+    activityLevel: Joi.string().valid('sedentary', 'lightlyActive', 'moderatelyActive', 'veryActive').required(),
     dailyCalories: Joi.number().positive().required(),
     goalWeight: Joi.number().positive().required()
 });
