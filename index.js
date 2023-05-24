@@ -512,8 +512,10 @@ app.get('/logout', (req, res) => {
 
 // 404 Route
 app.get('*', (req, res) => {
-    res.status(404).send('404 - Page not found');
+    const errorMessage = '404 - Page not found';
+    res.redirect(`/error?message=${encodeURIComponent(errorMessage)}`);
 });
+
 
 // Launch app to listen to specified port
 app.listen(process.env.PORT || 3000, () => {
