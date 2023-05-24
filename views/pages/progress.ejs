@@ -26,12 +26,12 @@
 
 
         <div class="container mt-4 d-flex justify-content-center">
-            <div class="card p-4" style="background-color: #f8f9fa;">
-                <div class="card-body">
+            <div class="card p-4" style="background-color: #eff5f8;">
+                <div class="card-body text-center">
                     <form action="/progress" method="GET">
-                        <div class="mb-3">
-                            <label for="datetime" class="form-label">Select date and time:</label>
-                            <select name="datetime" id="datetime" class="form-select">
+                        <div class="form-group">
+                            <label for="datetime" class="form-label">Select date and time</label>
+                            <select name="datetime" id="datetime" class="form-select mx-auto">
                                 <% for (const userLog of userLogs) { %>
                                 <% const formattedDateTime = userLog.date.toLocaleString(); %>
                                 <option value="<%= userLog._id %>"
@@ -41,11 +41,13 @@
                                 <% } %>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">View Progress</button>
+                        <button type="submit" class="btn btn-primary mt-3">View Progress</button>
                     </form>
                 </div>
             </div>
         </div>
+
+
 
         <% if (selectedLog) { %>
             <div class="container mt-4 d-flex justify-content-center">
