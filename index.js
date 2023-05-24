@@ -235,15 +235,83 @@ app.post('/signup-metrics', async(req, res) => {
 });
 
 // Home Route
-app.get('/home', (req, res) => {
-    const username = req.session.user.username;
-    const exerciseSaved = req.session.exerciseSaved;
+// app.get('/home', async(req, res) => {
+//     try {
+//         const username = req.session.user.username;
+//         const exerciseSaved = req.session.exerciseSaved;
 
-    // Clear the exerciseSaved flag in the session
-    req.session.exerciseSaved = false;
+//         // Clear the exerciseSaved flag in the session
+//         req.session.exerciseSaved = false;
 
-    res.render('pages/home', { username, exerciseSaved });
+//         const userId = req.session.user.id;
+
+//         const userLogs = await UserLog.find({ userId }); // Query the UserLog collection for the logged-in user
+
+//         let totalStepsTaken = 0;
+
+//         // Calculate the total steps taken and check if the user log is older than one day
+//         for (const userLog of userLogs) {
+//             totalStepsTaken += userLog.stepsTaken;
+
+//             // Check if the user log is older than one day
+//             const oneDayAgo = new Date();
+//             oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+//             if (userLog.date < oneDayAgo) {
+//                 // Reset the stepsTaken value for logs older than one day
+//                 userLog.stepsTaken = 0;
+//                 await userLog.save(); // Save the updated user log
+//             }
+//         }
+
+//         const stepsPercentage = (totalStepsTaken / 20000) * 100; // Calculate the percentage of steps taken
+
+//         console.log(totalStepsTaken); // Log the total steps taken
+
+//         res.render('pages/home', { username, exerciseSaved, stepsTaken: totalStepsTaken, stepsPercentage });
+//     } catch (error) {
+//         console.error(error);
+//         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
+//     }
+// });
+app.get('/home', async(req, res) => {
+    try {
+        const username = req.session.user.username;
+        const exerciseSaved = req.session.exerciseSaved;
+
+        // Clear the exerciseSaved flag in the session
+        req.session.exerciseSaved = false;
+
+        const userId = req.session.user.id;
+
+        const userLogs = await UserLog.find({ userId });
+
+        let totalStepsTaken = 0;
+        let totalExerciseTime = 0;
+
+        for (const userLog of userLogs) {
+            totalStepsTaken += userLog.stepsTaken;
+            totalExerciseTime += userLog.exerciseTime;
+        }
+
+        const maxSteps = 20000;
+        const maxExerciseTime = 1800; // Assuming the maximum exercise time is 1800 seconds (30 minutes)
+
+        const stepsPercentage = (totalStepsTaken / maxSteps) * 100;
+        const exerciseTimePercentage = (totalExerciseTime / maxExerciseTime) * 100;
+
+        res.render('pages/home', { username, exerciseSaved, stepsTaken: totalStepsTaken, stepsPercentage, totalExerciseTime, exerciseTimePercentage });
+    } catch (error) {
+        console.error(error);
+        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
+    }
 });
+
+
+
+
+
+
+
 
 // Run Page Route
 app.get('/run', (req, res) => {
