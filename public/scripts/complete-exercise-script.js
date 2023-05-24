@@ -4,6 +4,8 @@ const stepsTakenElement = document.getElementById('stepsTaken');
 const exerciseTypeElement = document.getElementById('exerciseType');
 const caloriesBurnedElement = document.getElementById('caloriesBurned');
 const hiddenTotalTimeElement = document.getElementById('hiddenTotalTime');
+const hiddenStepsTakenElement = document.getElementById('hiddenStepsTaken');
+const hiddenExerciseTypeElement = document.getElementById('hiddenExerciseType');
 const hiddenCaloriesBurnedElement = document.getElementById('hiddenCaloriesBurned');
 const saveExerciseButton = document.getElementById('saveExerciseButton');
 
@@ -36,6 +38,10 @@ function calculateCaloriesBurned() {
     const exerciseType = exerciseTypeElement.value;
     let caloriesBurned = 0;
     let baseMETVal = 0;
+
+    // Update the hidden input fields
+    hiddenStepsTakenElement.value = stepsTaken;
+    hiddenExerciseTypeElement.value = exerciseType;
 
     // Retrieve user information from session
     const weightElement = document.getElementById('userWeight');

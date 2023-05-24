@@ -262,13 +262,19 @@ app.get('/complete-exercise', (req, res) => {
 // Complete Exercise Backend
 app.post('/store-time', async (req, res) => {
     try {
-        const totalTime = req.body.totalTime;
         const userId = req.session.user.id;
+        const totalTime = req.body.totalTime;
+        const stepsTaken = req.body.stepsTaken;
+        const exerciseType = req.body.exerciseType;
+        const caloriesBurned = req.body.caloriesBurned;
 
         // Create a new UserLogEntry with the associated userId
         const userLog = new UserLog({
             userId: userId,
-            exerciseTime: totalTime
+            exerciseTime: totalTime,
+            stepsTaken: stepsTaken,
+            exerciseType: exerciseType,
+            caloriesBurned: caloriesBurned
         });
 
         // Save the UserLogEntry to the database
