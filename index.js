@@ -51,10 +51,10 @@ app.use(session({
 // Middleware function to check if the user is logged in
 const requireLogin = (req, res, next) => {
     if (!req.session.user) {
-      res.redirect('/login');
-      return;
+        res.redirect('/login');
+        return;
     } else {
-      next();
+        next();
     }
 };
 
@@ -435,6 +435,11 @@ app.post('/update-goalWeight', async(req, res) => {
         const user = req.session.user;
         const newGoalWeight = req.body.goalWeight;
 
+        // Validate the new goal weight
+        if (Number(newGoalWeight) < 0) {
+            throw new Error('Invalid goal weight. Please enter a positive number.');
+        }
+
         // Update the user's goal weight in the database
         await User.updateOne({ _id: user.id }, { goalWeight: newGoalWeight });
 
@@ -444,15 +449,21 @@ app.post('/update-goalWeight', async(req, res) => {
         res.redirect('/settings');
     } catch (error) {
         console.log(error);
-        res.redirect(`error?message=${encodeURIComponent(error.message)}`);
+        res.redirect(`/error?message=${encodeURIComponent(error.message)}`);
     }
 });
+
 
 // current Weight Update Route
 app.post('/update-currentWeight', async(req, res) => {
     try {
         const user = req.session.user;
         const newCurrentWeight = req.body.currentWeight;
+
+        // Validate the new goal weight
+        if (Number(newCurrentWeight) < 0) {
+            throw new Error('Invalid new weight. Please enter a positive number.');
+        }
 
         // Update the user's goal weight in the database
         await User.updateOne({ _id: user.id }, { currentWeight: newCurrentWeight });
@@ -473,6 +484,11 @@ app.post('/update-currentHeight', async(req, res) => {
         const user = req.session.user;
         const newCurrentHeight = req.body.currentHeight;
 
+        // Validate the new goal weight
+        if (Number(newCurrentHeight) < 0) {
+            throw new Error('Invalid current height. Please enter a positive number.');
+        }
+
         // Update the user's goal weight in the database
         await User.updateOne({ _id: user.id }, { currentHeight: newCurrentHeight });
 
@@ -491,6 +507,11 @@ app.post('/update-age', async(req, res) => {
     try {
         const user = req.session.user;
         const newAge = req.body.age;
+
+        // Validate the new goal weight
+        if (Number(newAge) < 0) {
+            throw new Error('Invalid age. Please enter a positive number.');
+        }
 
         // Update the user's goal weight in the database
         await User.updateOne({ _id: user.id }, { age: newAge });
