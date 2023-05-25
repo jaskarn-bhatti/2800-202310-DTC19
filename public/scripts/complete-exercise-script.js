@@ -1,17 +1,17 @@
 // Get the reference to the totalTime, stepsTaken, exerciseType, and caloriesBurned elements
-const totalTimeElement = document.getElementById('totalTime');
-const stepsTakenElement = document.getElementById('stepsTaken');
-const exerciseTypeElement = document.getElementById('exerciseType');
-const caloriesBurnedElement = document.getElementById('caloriesBurned');
-const hiddenTotalTimeElement = document.getElementById('hiddenTotalTime');
-const hiddenStepsTakenElement = document.getElementById('hiddenStepsTaken');
-const hiddenExerciseTypeElement = document.getElementById('hiddenExerciseType');
-const hiddenCaloriesBurnedElement = document.getElementById('hiddenCaloriesBurned');
-const saveExerciseButton = document.getElementById('saveExerciseButton');
+const totalTimeElement = document.getElementById("totalTime");
+const stepsTakenElement = document.getElementById("stepsTaken");
+const exerciseTypeElement = document.getElementById("exerciseType");
+const caloriesBurnedElement = document.getElementById("caloriesBurned");
+const hiddenTotalTimeElement = document.getElementById("hiddenTotalTime");
+const hiddenStepsTakenElement = document.getElementById("hiddenStepsTaken");
+const hiddenExerciseTypeElement = document.getElementById("hiddenExerciseType");
+const hiddenCaloriesBurnedElement = document.getElementById("hiddenCaloriesBurned");
+const saveExerciseButton = document.getElementById("saveExerciseButton");
 
 // Retrieve the total time from the query parameter
 const urlParams = new URLSearchParams(window.location.search);
-const totalTime = urlParams.get('time');
+const totalTime = urlParams.get("time");
 
 // Update the totalTime element and hiddenTotalTime value with the actual total time
 totalTimeElement.textContent = totalTime;
@@ -19,13 +19,16 @@ hiddenTotalTimeElement.value = totalTime;
 
 // Function to calculate activity multiplier based on activity level
 function getActivityMultiplier(activityLevel) {
-    if (activityLevel === 'sedentary') {
+    if (activityLevel === "sedentary") {
         return 1.2;
-    } else if (activityLevel === 'lightlyActive') {
+    }
+    if (activityLevel === "lightlyActive") {
         return 1.375;
-    } else if (activityLevel === 'moderatelyActive') {
+    }
+    if (activityLevel === "moderatelyActive") {
         return 1.55;
-    } else if (activityLevel === 'veryActive') {
+    }
+    if (activityLevel === "veryActive") {
         return 1.725;
     }
     // Default value
@@ -46,17 +49,17 @@ function calculateCaloriesBurned() {
     hiddenExerciseTypeElement.value = exerciseType;
 
     // Retrieve user information from session
-    const weightElement = document.getElementById('userWeight');
-    const activityLevelElement = document.getElementById('userActivityLevel');
+    const weightElement = document.getElementById("userWeight");
+    const activityLevelElement = document.getElementById("userActivityLevel");
 
     const weight = parseFloat(weightElement.dataset.weight);
     const activityLevel = activityLevelElement.value;
     const activityModifier = getActivityMultiplier(activityLevel);
 
-    if (exerciseType === 'run') {
+    if (exerciseType === "run") {
         baseMETVal = 10.5; // Running MET value sourced from https://golf.procon.org/met-values-for-800-activities/
         stepsPerKm = 1050; // Average of steps per km for running
-    } else if (exerciseType === 'walk') {
+    } else if (exerciseType === "walk") {
         baseMETVal = 3.5; // Walking MET value sourced from https://golf.procon.org/met-values-for-800-activities/
         stepsPerKm = 1350; // Average of steps per km for walking
     }
@@ -86,6 +89,7 @@ function calculateCaloriesBurned() {
 }
 
 // Add event listeners to stepsTaken and exerciseType elements
-stepsTakenElement.addEventListener('input', calculateCaloriesBurned);
-exerciseTypeElement.addEventListener('change', calculateCaloriesBurned);
+stepsTakenElement.addEventListener("input", calculateCaloriesBurned);
+exerciseTypeElement.addEventListener("change", calculateCaloriesBurned);
+
 
