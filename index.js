@@ -99,8 +99,8 @@ const loginSchema = Joi.object({
 // Login Backend
 app.post('/login', async(req, res) => {
     try {
-        var username = req.body.username;
-        var password = req.body.password;
+        var username = req.body.username.trim();
+        var password = req.body.password.trim();
 
         const { error } = loginSchema.validate({ username, password });
         if (error) {
@@ -159,9 +159,9 @@ const signUpSchema = Joi.object({
 app.post('/signup', async(req, res) => {
     //Store user 
     try {
-        var email = req.body.email;
-        var username = req.body.username;
-        var password = req.body.password;
+        var email = req.body.email.trim();
+        var username = req.body.username.trim();
+        var password = req.body.password.trim();
 
         const { error } = signUpSchema.validate({ email, username, password });
         if (error) {
