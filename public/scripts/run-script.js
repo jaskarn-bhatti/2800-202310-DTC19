@@ -47,9 +47,18 @@ function restartTimer() {
 
 document.getElementById("startButton").addEventListener("click", function() {
     if (!interval) {
-        duration = document.getElementById("timeInput").value;
+        duration = parseInt(document.getElementById("timeInput").value);
         startTimer();
         toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
+    }
+});
+
+document.getElementById("timeInput").addEventListener("input", function() {
+    const inputValue = timeInput.value.trim();
+    const validInput = /^\-?\d+$/.test(inputValue);
+  
+    if (!validInput) {
+      timeInput.value = '';
     }
 });
 
