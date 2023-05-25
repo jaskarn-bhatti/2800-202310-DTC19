@@ -39,6 +39,7 @@ function calculateCaloriesBurned() {
     let caloriesBurned = 0;
     let baseMETVal = 0;
     let stepsPerKm = 0;
+    let roundedCaloriesBurned = 0;
 
     // Update the hidden input fields
     hiddenStepsTakenElement.value = stepsTaken;
@@ -46,13 +47,9 @@ function calculateCaloriesBurned() {
 
     // Retrieve user information from session
     const weightElement = document.getElementById('userWeight');
-    const ageElement = document.getElementById('userAge');
-    const heightElement = document.getElementById('userHeight');
     const activityLevelElement = document.getElementById('userActivityLevel');
 
     const weight = parseFloat(weightElement.dataset.weight);
-    const age = parseInt(ageElement.dataset.age);
-    const height = parseFloat(heightElement.dataset.height);
     const activityLevel = activityLevelElement.value;
     const activityModifier = getActivityMultiplier(activityLevel);
 
