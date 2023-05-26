@@ -8,11 +8,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 const User = require('./models/user.js');
 const UserLog = require('./models/userLog.js');
-const { channel } = require('diagnostics_channel');
 
 // Load the MongoDB driver and connect to the database
 var MongoDBStore = require('connect-mongodb-session')(session);
 
+// Define the port to run on
 const port = process.env.PORT || 3000;
 
 //Create express app
@@ -24,11 +24,11 @@ app.use('/css', express.static(__dirname + 'public/css'));
 app.use('/icons', express.static(__dirname + 'public/icons'));
 app.use('/scripts', express.static(__dirname + 'public/scripts'));
 
-// Set up database connections
+// Set up database connection
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`, { useNewUrlParser: true });
 const usersDb = mongoose.connection;
 
-// Connect to the database
+// Define the MongoDB store
 var dbStore = new MongoDBStore({
     uri: `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.de6cakk.mongodb.net/?retryWrites=true&w=majority`,
     collection: 'sessions'
@@ -37,7 +37,7 @@ var dbStore = new MongoDBStore({
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 
-//Setup session
+// Set up session
 app.use(session({
     secret: `${process.env.NODE_SESSION_SECRET}`,
     resave: false,
@@ -202,7 +202,6 @@ const signUpMetricsSchema = Joi.object({
     goalWeight: Joi.number().positive().required()
 });
 
-
 // Signup - User Metrics Backend
 app.post('/signup-metrics', async(req, res) => {
     try {
@@ -221,6 +220,7 @@ app.post('/signup-metrics', async(req, res) => {
 
         User.db = usersDb;
 
+        // Find user with the same id and update their metrics
         await User.findOneAndUpdate({ _id: userID }, {
             age: age,
             currentWeight: currentWeight,
@@ -230,6 +230,7 @@ app.post('/signup-metrics', async(req, res) => {
             goalWeight: goalWeight
         });
 
+        // Set the session user metrics
         var id = req.session.user.id;
         var email = req.session.user.email;
         var username = req.session.user.username;
@@ -284,7 +285,6 @@ app.get('/home', requireLogin, async(req, res) => {
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
-
 
 // Run Page Route
 app.get('/run', requireLogin, (req, res) => {
@@ -393,7 +393,6 @@ app.get('/profile', requireLogin, (req, res) => {
     res.render('pages/profile', { username, email, age, currentHeight, currentWeight, goalWeight });
 });
 
-
 // Settings Route
 app.get('/settings', requireLogin, (req, res) => {
     const username = req.session.user.username;
@@ -452,7 +451,6 @@ app.post('/update-goalWeight', async(req, res) => {
         res.redirect(`/error?message=${encodeURIComponent(error.message)}`);
     }
 });
-
 
 // current Weight Update Route
 app.post('/update-currentWeight', async(req, res) => {
@@ -563,7 +561,6 @@ app.post('/update-username', async(req, res) => {
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
-
 
 //Logout Route
 app.get('/logout', (req, res) => {
