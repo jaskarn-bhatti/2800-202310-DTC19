@@ -1,4 +1,6 @@
+// Load the script on page load
 document.addEventListener("DOMContentLoaded", function() {
+    // Declare variables
     var gameContainer = document.getElementById("game-container");
     var scoreDisplay = document.getElementById("score");
     var score = 0;
@@ -7,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var gameTimer;
     var isSpeedIncreased = false;
 
+    // Handle icons being clicked
     gameContainer.addEventListener("click", function(event) {
         if (event.target.classList.contains("icon")) {
             event.target.style.display = "none";
@@ -15,10 +18,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // Update the score display
     function updateScore() {
         scoreDisplay.textContent = "Score: " + score;
     }
 
+    // Start the game
     function startGame() {
         score = 0;
         updateScore();
@@ -27,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
         gameTimer = setTimeout(endGame, gameDuration * 1000);
     }
 
+    // Show an icon in a random position
     function showIcon() {
         var containerWidth = gameContainer.offsetWidth;
         var containerHeight = gameContainer.offsetHeight;
@@ -50,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // End the game
     function endGame() {
         clearInterval(iconInterval);
         clearTimeout(gameTimer);
@@ -60,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
             icons[0].parentNode.removeChild(icons[0]);
         }
 
-
+        // Display message based on score
         if (score < 10) {
             scoreDisplay.innerHTML = "Game Over! Final Score: " + score + "<br>";
             scoreDisplay.innerHTML += "You need to click faster!";
@@ -79,10 +86,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Get a random position between min and max
     function getRandomPosition(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    // Update playing area size based on screen size
     function updateGameContainerSize() {
         var screenWidth = window.innerWidth;
         var screenHeight = window.innerHeight;

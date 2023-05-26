@@ -2,12 +2,14 @@ let interval = null;
 let time;
 let duration;
 
+// Display time in MM:SS format
 function formatTime(time) {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
 
+// Start the timer
 function startTimer() {
     clearInterval(interval);
     let timerProgress = document.getElementById("timerProgress");
@@ -29,6 +31,7 @@ function startTimer() {
     }, 1000);
 }
 
+// Stop the timer
 function stopTimer() {
     clearInterval(interval);
     interval = null;
@@ -39,12 +42,14 @@ function stopTimer() {
     toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
 }
 
+// Restart the timer
 function restartTimer() {
     stopTimer();
     startTimer();
     toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
 }
 
+// Handle start button click
 document.getElementById("startButton").addEventListener("click", function() {
     if (!interval) {
         duration = parseInt(document.getElementById("timeInput").value);
@@ -53,6 +58,7 @@ document.getElementById("startButton").addEventListener("click", function() {
     }
 });
 
+// Handle time input with regex to ensure only numbers are entered
 document.getElementById("timeInput").addEventListener("input", function() {
     const inputValue = timeInput.value.trim();
     const validInput = /^\-?\d+$/.test(inputValue);
@@ -62,11 +68,13 @@ document.getElementById("timeInput").addEventListener("input", function() {
     }
 });
 
+// Handle stop button click
 document.getElementById("stopButton").addEventListener("click", function() {
     stopTimer();
     toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
 });
 
+// Handle restart button click
 document.getElementById("restartButton").addEventListener("click", function() {
     restartTimer();
     toggleCompleteButtonVisibility(); // Hide or show the complete button based on conditions
@@ -89,4 +97,5 @@ function completeRun() {
     window.location.href = "/complete-exercise?time=" + totalTimeTaken;
 }
 
+// Complete Run button click event listener
 completeButton.addEventListener("click", completeRun);
