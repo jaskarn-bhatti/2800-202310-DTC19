@@ -21,11 +21,11 @@
     <div class="d-flex flex-column align-items-center">
       <div class="mb-3">
         <label for="timeInput" class="form-label">Enter Time (in seconds)</label>
-        <input type="number" class="form-control" id="timeInput" required>
+        <input type="text" class="form-control" id="timeInput" required>
       </div>
       <button type="button" class="btn btn-primary mb-2 w-100 btn-lg" id="startButton">Start Timer</button>
-      <button type="button" class="btn btn-secondary mb-2 w-100 btn-lg" id="stopButton">Stop Timer</button>
-      <button type="button" class="btn btn-dark mb-2 w-100 btn-lg" id="restartButton">Restart</button>
+      <button type="button" class="btn btn-danger mb-2 w-100 btn-lg" id="stopButton">Stop Timer</button>
+      <button type="button" class="btn btn-secondary mb-2 w-100 btn-lg" id="restartButton">Restart</button>
       <button type="button" class="btn btn-success mb-2 w-100 btn-lg" id="completeButton" style="display: none;">Complete Run</button>
     </div>
 </main>
@@ -34,7 +34,6 @@
   <%- include('../partials/footer'); %>
 
   <script src="/public/scripts/run-script.js"></script>
-  </script>
 </footer>
 
 </body>

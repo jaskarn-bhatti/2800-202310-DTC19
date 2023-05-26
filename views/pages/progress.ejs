@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Lato', sans-serif;
+            }
+        </style>
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div class="container mt-5 d-flex justify-content-center">
+            <div class="text-center">
+                <h2>Progress</h2>
+            </div>
+        </div>
+
+
+        <div class="container mt-4 d-flex justify-content-center">
+            <div class="card p-4" style="background-color: #eff5f8;">
+                <div class="card-body text-center">
+                    <form action="/progress" method="GET">
+                        <div class="form-group">
+                            <label for="datetime" class="form-label">Select date and time</label>
+                            <select name="datetime" id="datetime" class="form-select mx-auto">
+                                <% for (const userLog of userLogs) { %>
+                                <% const formattedDateTime = userLog.date.toLocaleString(); %>
+                                <option value="<%= userLog._id %>"
+                                    <%= selectedLog && selectedLog._id.toString() === userLog._id.toString() ? 'selected' : '' %>>
+                                    <%= formattedDateTime %>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">View Progress</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <% if (selectedLog) { %>
+            <div class="container mt-4 d-flex justify-content-center">
+                <div class="card p-4 border-0" style="background-color: #ffffff;">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <%= selectedLog.date.toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' }) %>
+                        </h2>
+                        <hr>
+                        <p class="card-text">Exercise Time:
+                            <%= selectedLog.exerciseTime %> seconds</p>
+                        <p class="card-text">Steps Taken:
+                            <%= selectedLog.stepsTaken %>
+                        </p>
+                        <p class="card-text">Exercise Type:
+                            <%= selectedLog.exerciseType %>
+                        </p>
+                        <p class="card-text">Calories Burned:
+                            <%= selectedLog.caloriesBurned %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+</html>

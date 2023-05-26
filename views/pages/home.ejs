@@ -2,49 +2,69 @@
 <html lang="en">
 
 <head>
-  <%- include('../partials/head'); %>
+    <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="/public/css/home.css">
 </head>
 
 <body class="container">
 
-  <header>
-    <%- include('../partials/header'); %>
-  </header>
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
 
-  <main>
-    <% if (exerciseSaved) { %>
-    <div id="exerciseSavedAlert" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-      Exercise saved successfully.
-    </div>
-    <% } %>
+    <main>
+        <% if (exerciseSaved) { %>
+            <div id="exerciseSavedAlert" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                Exercise saved successfully.
+            </div>
+            <% } %>
 
-    <!-- Bootstrap -->
-    <div class="col-md-12 text-center">
-      <h2 class="mt-5 welcomeText">Welcome <%= username %></h2>
+                <div class="col-md-12 text-center">
+                    <h2 class="mt-5 welcomeText">Welcome
+                        <%= username %>
+                    </h2>
 
-      <div class="col-md-12 d-flex justify-content-center align-items-center flex-column" style="height: 100vh;">
-        <a href="/run" class="btn btn-primary btn-lg w-100 mb-4" role="button" tabindex="0" aria-disabled="true">RUN</a>
-        <a href="#" class="btn btn-primary btn-lg disabled w-100 mb-4" role="button" tabindex="1" aria-disabled="true">Progress</a>
-        <a href="#" class="btn btn-primary btn-lg disabled w-100 mb-4" role="button" tabindex="2" aria-disabled="true">Recommendations</a>
-      </div>
-    </div>
-  </main>
+                    <div class="stepsTaken">
+                        <%= stepsTaken %> Steps
+                    </div>
 
-  <footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        setTimeout(function() {
-          $("#exerciseSavedAlert").alert('close');
-        }, 2000);
-      });
-    </script>
-  </footer>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress" style="width: <%= stepsPercentage %>%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="stepsTaken">
+                        <%= Math.floor(totalExerciseTime / 60) %> Minutes
+                    </div>
+
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress" style="width: <%= exerciseTimePercentage %>%;"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 d-flex flex-column mt-5 p-1" style="height: 100vh;">
+                        <a href="/run" class="btn btn-primary btn-lg w-100 mb-4" role="button" tabindex="0">RUN</a>
+                        <a href="/progress" class="btn btn-primary btn-lg w-100 mb-4" role="button" tabindex="1">Progress</a>
+                    </div>
+                </div>
+    </main>
+
+
+    <footer>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $("#exerciseSavedAlert").alert('close');
+                }, 2000);
+            });
+        </script>
+    </footer>
 
 </body>
 
 </html>
-
-
-

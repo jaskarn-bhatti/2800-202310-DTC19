@@ -10,36 +10,52 @@
 </header>
 
 <main class="d-flex flex-column align-items-center justify-content-center text-center mx-auto">
-  <h2>Exercise Completed</h2>
-  <table class="table table-bordered w-50 mt-4">
-    <tr>
-      <th>Total Time Duration</th>
-    </tr>
-    <tr>
-      <td><span id="totalTime"></span> seconds</td>
-    </tr>
-  </table>
-  <form id="exerciseForm" method="POST" action="/store-time?time=<%= totalTime %>" class="mt-4">
+  <div class="mb-3">
+    <h2 class="mb-3">Exercise Completed</h2>
+    <p>Enter number of steps and exercise type to save exercise</p>
+  </div>
+  
+  
+  <div class="container-box bg-light p-3 mb-3 w-50">
+    <h5>Total Time Duration</h5>
+    <span id="totalTime"></span> seconds
+  </div>
+  
+  <div class="container-box bg-light p-3 mb-3 w-50">
+    <h5>Steps Taken</h5>
+    <input type="number" name="stepsTaken" id="stepsTaken" min="0" required class="form-control">
+  </div>
+  
+  <div class="container-box bg-light p-3 mb-3 w-50">
+    <h5>Exercise Type</h5>
+    <select name="exerciseType" id="exerciseType" required class="form-select">
+      <option value="" selected disabled>Select Exercise Type</option>
+      <option value="run">Run</option>
+      <option value="walk">Walk</option>
+    </select>
+  </div>
+  
+  <div class="container-box bg-light p-3 mb-3 w-50">
+    <h5>Calories Burned</h5>
+    <span id="caloriesBurned"></span> calories
+  </div>
+  
+  <form id="exerciseForm" method="POST" action="/store-time" class="mt-4">
+    <input type="hidden" id="userWeight" data-weight="<%= user.weight %>">
+    <input type="hidden" id="userAge" data-age="<%= user.age %>">
+    <input type="hidden" id="userHeight" data-height="<%= user.height %>">
+    <input type="hidden" id="userActivityLevel" data-activityLevel="<%= user.activityLevel %>">
     <input type="hidden" name="totalTime" id="hiddenTotalTime" value="<%= totalTime %>">
-    <button type="submit" class="btn btn-primary btn-lg">Save Exercise</button>
+    <input type="hidden" name="stepsTaken" id="hiddenStepsTaken" value="">
+    <input type="hidden" name="exerciseType" id="hiddenExerciseType" value="">
+    <input type="hidden" name="caloriesBurned" id="hiddenCaloriesBurned" data-calories-burned="">
+    <button type="submit" class="btn btn-primary btn-lg" id="saveExerciseButton" disabled>Save Exercise</button>
   </form>
 </main>
 
 <footer>
   <%- include('../partials/footer'); %>
-  <script>
-    // Get the reference to the totalTime and hiddenTotalTime elements
-    const totalTimeElement = document.getElementById('totalTime');
-    const hiddenTotalTimeElement = document.getElementById('hiddenTotalTime');
-
-    // Retrieve the total time from the query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const totalTime = urlParams.get('time');
-
-    // Update the totalTime element and hiddenTotalTime value with the actual total time
-    totalTimeElement.textContent = totalTime;
-    hiddenTotalTimeElement.value = totalTime;
-  </script>
+  <script src="/public/scripts/complete-exercise-script.js"></script>
 </footer>
 
 </body>

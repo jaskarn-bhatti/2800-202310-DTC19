@@ -9,7 +9,10 @@ const userLogSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  exerciseTime: Number
+  exerciseTime: Number,
+  stepsTaken: Number,
+  exerciseType: String,
+  caloriesBurned: Number
 });
 
 const UserLog = mongoose.model('UserLog', userLogSchema);
