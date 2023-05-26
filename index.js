@@ -78,8 +78,11 @@ app.use((err, req, res, next) => {
     res.redirect(`pages/error?message=${encodeURIComponent(errorMessage)}`);
 });
 
+// Handle GET requests to '/error' path
 app.get('/error', (req, res) => {
     const errorMessage = req.query.message || 'An error occurred';
+
+    // Render the 'pages/error' view template and pass the error message as a variable
     res.render('pages/error', { message: errorMessage });
 });
 
@@ -111,6 +114,7 @@ app.post('/login', async(req, res) => {
 
         const user = await User.findOne({ username: username });
 
+        // If the passwords do not match, throw an error indicating invalid username or password
         if (!user) {
             throw new Error('Invalid username or password');
         }
@@ -121,6 +125,7 @@ app.post('/login', async(req, res) => {
             throw new Error('Invalid username or password');
         }
 
+        // Store the user data in the session for future access
         req.session.user = {
             id: user._id,
             email: user.email,
@@ -135,11 +140,11 @@ app.post('/login', async(req, res) => {
         res.redirect('/home');
 
     } catch (error) {
+        // If an error occurs during the login process, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
 });
-
 
 /* SIGNUP CODE */
 
@@ -177,11 +182,16 @@ app.post('/signup', async(req, res) => {
             password: hashedPassword,
         });
 
+        // Save the user to the database
         await user.save();
+
+        // Store the user data in the session for future access
         req.session.user = { id: user._id, email: user.email, username: user.username, password: user.password };
+
         res.redirect('/signup-metrics');
 
     } catch (error) {
+        // If an error occurs during the signup process, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -238,9 +248,11 @@ app.post('/signup-metrics', async(req, res) => {
 
         req.session.user = { id: id, email: email, username: username, password: password, age: age, currentWeight: currentWeight, currentHeight: currentHeight, activityLevel: activityLevel, dailyCalories: dailyCalories, goalWeight: goalWeight };
 
+        // Redirect the user to the '/home' page upon successful signup metrics submission
         res.redirect('/home');
 
     } catch (error) {
+        // If an error occurs during the signup metrics submission, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -280,7 +292,9 @@ app.get('/home', requireLogin, async(req, res) => {
         const exerciseTimePercentage = (totalExerciseTime / maxExerciseTime) * 100;
 
         res.render('pages/home', { username, exerciseSaved, stepsTaken: totalStepsTaken, stepsPercentage, totalExerciseTime, exerciseTimePercentage });
+
     } catch (error) {
+        // If an error occurs at home, log the error and redirect to the error page
         console.error(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -346,7 +360,9 @@ app.post('/store-time', async(req, res) => {
         req.session.exerciseSaved = true;
 
         res.redirect('/home');
+
     } catch (error) {
+        // If an error occurs at store-time, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -367,7 +383,9 @@ app.get('/progress', requireLogin, async(req, res) => {
         }
 
         res.render('pages/progress', { userLogs, selectedLog });
+
     } catch (error) {
+        // If an error occurs at the progress page, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -422,7 +440,9 @@ app.post('/update-password', async(req, res) => {
         req.session.user.password = hashedPassword;
 
         res.redirect('/settings');
+
     } catch (error) {
+        // If an error occurs during update password, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -446,7 +466,9 @@ app.post('/update-goalWeight', async(req, res) => {
         req.session.user.goalWeight = newGoalWeight;
 
         res.redirect('/settings');
+
     } catch (error) {
+        // If an error occurs during update-goalWeight, log the error and redirect to the error page
         console.log(error);
         res.redirect(`/error?message=${encodeURIComponent(error.message)}`);
     }
@@ -470,7 +492,9 @@ app.post('/update-currentWeight', async(req, res) => {
         req.session.user.currentWeight = newCurrentWeight;
 
         res.redirect('/settings');
+
     } catch (error) {
+        // If an error occurs during update-currentWeight, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -494,7 +518,9 @@ app.post('/update-currentHeight', async(req, res) => {
         req.session.user.currentHeight = newCurrentHeight;
 
         res.redirect('/settings');
+
     } catch (error) {
+        // If an error occurs during update-currentHeight, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -518,7 +544,9 @@ app.post('/update-age', async(req, res) => {
         req.session.user.age = newAge;
 
         res.redirect('/settings');
+
     } catch (error) {
+        // If an error occurs during update-age, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -537,7 +565,9 @@ app.post('/update-email', async(req, res) => {
         req.session.user.email = newEmail;
 
         res.redirect('/settings');
+
     } catch (error) {
+        // If an error occurs during update-email, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
@@ -556,7 +586,9 @@ app.post('/update-username', async(req, res) => {
         req.session.user.username = newUsername;
 
         res.redirect('/settings');
+
     } catch (error) {
+        // If an error occurs during update-username, log the error and redirect to the error page
         console.log(error);
         res.redirect(`error?message=${encodeURIComponent(error.message)}`);
     }
