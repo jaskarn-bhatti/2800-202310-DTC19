@@ -72,6 +72,7 @@ To create our app, used the following technologies:
     - npm i mongoose
 3. You will require the .env which contains the session secret and MongoDB user account
 4. First install the necessary frameworks and dependencies. After which you will be able to start working on the app.
+5. You can find the testing log we used for this project [here](https://docs.google.com/spreadsheets/d/1_2-d7ZmiL-q3kv_4VOZSeDP-_cf-hT-Ey5_H96AAZAg/edit?usp=sharing)
 
 ## How To Use This App
 The app has a few core features, they are:
